@@ -11,7 +11,7 @@ import frc.robot.subsystems.Elevator;
 
 public class ArcadeElevator extends Command {
  private static final class Config{
-    public static final int kAxis = 1;
+    public static final int kAxis = 5;
     public static final double kMultiplier = 0.5;
   }
 

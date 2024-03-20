@@ -1,0 +1,30 @@
+{
+  "robotWidth": 0.9,
+  "robotLength": 0.9,
+  "holonomicMode": true,
+  "pathFolders": [
+    "1 + Exit",
+    "1+1",
+    "1+1 Center Subwoofer",
+    "1+1 Left",
+    "1+1 Left Subwoofer",
+    "1+1 Right Subwoofer",
+    "1+1+1",
+    "1+2",
+    "1+3",
+    "1+8",
+    "1+Exit Left",
+    "1+Exit Right",
+    "1+3 Left"
+  ],
+  "autoFolders": [
+    "1+0 Subwoofer",
+    "1+1 Left",
+    "1+1 Subwoofer"
+  ],
+  "defaultMaxVel": 3.0,
+  "defaultMaxAccel": 3.0,
+  "defaultMaxAngVel": 540.0,
+  "defaultMaxAngAccel": 720.0,
+  "maxModuleSpeed": 4.5
+}

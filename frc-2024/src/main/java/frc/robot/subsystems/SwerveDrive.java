@@ -4,8 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.fasterxml.jackson.databind.util.Named;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -22,7 +24,9 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -92,12 +96,17 @@ public class SwerveDrive extends SubsystemBase {
   public void resetHeading() {
     // m_imu.reset();
     // DEBUG: CHANGE THIS
+    // System.out.println("DEBUG: called resetHeading.");
     m_imu.reset();
     // m_imu.setAngleAdjustment(90);
   }
 
   public InstantCommand resetHeadingCommand(){
     return new InstantCommand(this::resetHeading, this);
+  }
+
+  public void adjustAngle(double angle){
+    m_imu.setAngleAdjustment(angle);
   }
 
   public void resetOdo(Pose2d pose) {
@@ -185,8 +194,15 @@ public class SwerveDrive extends SubsystemBase {
       }, new Pose2d(m_xStartPose, m_yStartPose, getAngle()));
   }
 
-  public SwerveDrive(){
-     AutoBuilder.configureHolonomic(
+  public SwerveDrive(Command stowCommand, Command autoShoot, Command autoIntake, Command groundIntake, Command subwoofer, Command outtake) {
+    NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
+    NamedCommands.registerCommand("Stow", stowCommand);
+    NamedCommands.registerCommand("AutoShoot", autoShoot);
+    NamedCommands.registerCommand("AutoIntake", autoIntake);
+    NamedCommands.registerCommand("GroundIntake", groundIntake);
+    NamedCommands.registerCommand("Outtake", outtake);
+    NamedCommands.registerCommand("Subwoofer", subwoofer);
+    AutoBuilder.configureHolonomic(
                 this::getPoseMeters, // Robot pose supplier
                 this::resetOdo, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
@@ -214,6 +230,18 @@ public class SwerveDrive extends SubsystemBase {
      );
 
      SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
+     double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
+     SmartDashboard.putNumber("Driving/Adjust angle", m_angle);
+     adjustAngle(m_angle);
+
+     new Thread(() -> {
+      try {
+        Thread.sleep(1000);
+        resetHeading();
+      } catch (Exception e) {
+        // System.out.println("ERROR in sleep thread: " + e);
+      }
+     }).start();
   }
 
   public void stop() {
@@ -247,7 +275,7 @@ public class SwerveDrive extends SubsystemBase {
     SmartDashboard.putNumber("Swerve/Odo/Y", m_yStartPose);
 
     
-    // System.out.println("Chassis speeds:" + this.getChassisSpeeds());
-    // System.out.println("X error: " + (3 - m_odo.getPoseMeters().getX()));
+    // // System.out.println("Chassis speeds:" + this.getChassisSpeeds());
+    // // System.out.println("X error: " + (3 - m_odo.getPoseMeters().getX()));
   }
 }

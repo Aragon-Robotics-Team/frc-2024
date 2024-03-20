@@ -7,7 +7,6 @@ package frc.robot.commands.pivot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.LimitSwitch;
 import frc.robot.subsystems.Pivot;
 
 public class ArcadePivot extends Command {
@@ -32,7 +31,7 @@ public class ArcadePivot extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("I'm running");
+    // System.out.println("I'm running");
     m_pivot.setSpeed(0);
   }
 
@@ -42,10 +41,10 @@ public class ArcadePivot extends Command {
     m_joystickInput = m_joystick.getRawAxis(Config.kAxis)*Config.kMultiplier;
     // if (!m_pivot.ifForwardTriggered() && m_joystickInput > 0){
     //   m_pivot.setSpeed(0);
-    //   System.out.println("Forward pressed, moving forward, setting speed to 0");
+    //   // System.out.println("Forward pressed, moving forward, setting speed to 0");
     // } else if (!m_pivot.ifBackwardTriggered() && m_joystickInput < 0){
     //   m_pivot.setSpeed(0);
-    //   System.out.println("Backwards pressed, moving backward, setting speed to 0");
+    //   // System.out.println("Backwards pressed, moving backward, setting speed to 0");
     // } else {
       SmartDashboard.putNumber("Pivot speed", m_joystickInput);
       m_pivot.setSpeed(m_joystickInput);

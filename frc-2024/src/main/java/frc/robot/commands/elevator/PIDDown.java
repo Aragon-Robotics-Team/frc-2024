@@ -12,10 +12,10 @@ import frc.robot.subsystems.Elevator;
 public class PIDDown extends Command {
 
   private static final class Config{
-    public static final double kSetpoint = 0.70;
-    public static final double kDeadband = 0.05;
-    public static final double kP = 0.15;
-    public static final double kI = 0;
+    public static final double kSetpoint = -0.40;
+    public static final double kDeadband = 0.005;
+    public static final double kP = 0.6;
+    public static final double kI = 0.0;
     public static final double kD = 0;
   }
 
@@ -40,12 +40,9 @@ public class PIDDown extends Command {
   @Override
   public void execute() {
     m_speed = m_pid.calculate(m_elevator.getEncoderPosition(), Config.kSetpoint);
-    System.out.println("I'm running");
 
     if (!(Math.abs(m_elevator.getEncoderPosition() - Config.kSetpoint)<= Config.kDeadband)){
-    System.out.println("I'm running in if-else loop");
-    System.out.println(m_speed);
-    SmartDashboard.putNumber("PID value", m_speed);
+    SmartDashboard.putNumber("Elevator/PID value", m_speed);
     m_elevator.setSpeed(m_speed);
   
     }

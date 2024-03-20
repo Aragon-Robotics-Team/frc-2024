@@ -11,7 +11,7 @@ import frc.robot.subsystems.Wrist;
 public class ArcadeWrist extends Command {
 
   private static final class Config{
-    public static final int kAxis = 5;
+    public static final int kAxis = 4;
     public static final double kMultiplier = 0.5;
   }
 

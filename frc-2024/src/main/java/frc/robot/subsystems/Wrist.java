@@ -4,22 +4,21 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WristConstants;
-
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 
 
 public class Wrist extends SubsystemBase {
 
   private TalonFX m_falcon = new TalonFX(WristConstants.kMotorID);
-  private LimitSwitch m_forward = new LimitSwitch(5);
-  private LimitSwitch m_backward = new LimitSwitch(4);
-  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(6);
+  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(0);
+  private LimitSwitch m_forward = new LimitSwitch(WristConstants.kForwardSwitchID);
+  private LimitSwitch m_backward = new LimitSwitch(WristConstants.kBackwardSwitchID);
   public Wrist() {
     m_falcon.setPosition(0);
     m_falcon.setNeutralMode(NeutralModeValue.Brake);
@@ -50,9 +49,9 @@ public class Wrist extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Wrist forward", ifForwardTriggered());
-    SmartDashboard.putBoolean("Wrist backward", ifBackwardTriggered());
-    SmartDashboard.putNumber("Wrist encoder", getEncoderPosition());
+    SmartDashboard.putNumber("Mech/Wrist/Encoder", getEncoderPosition());
+    SmartDashboard.putBoolean("Mech/Wrist/Forward switch", ifForwardTriggered());
+    SmartDashboard.putBoolean("Mech/Wrist/Backward switch", ifBackwardTriggered());
   }
 }
 

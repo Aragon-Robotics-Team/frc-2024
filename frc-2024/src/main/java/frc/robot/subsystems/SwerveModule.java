@@ -65,6 +65,9 @@ public class SwerveModule extends SubsystemBase {
     m_driveMotor.setInverted(driveReversed);
     m_turnMotor.setInverted(turningReversed);
 
+    m_turnMotor.burnFlash();
+    m_driveMotor.burnFlash();
+
     resetEncoders();
 
     SmartDashboard.putData("Swerve/Distance/reset_" + m_moduleId,  new InstantCommand(() -> resetEncoders()));

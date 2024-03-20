@@ -4,9 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,16 +18,18 @@ public class Elevator extends SubsystemBase {
   private CANSparkMax m_neo1 = new CANSparkMax(ElevatorConstants.kMotorID1, MotorType.kBrushless);
   private CANSparkMax m_neo2 = new CANSparkMax(ElevatorConstants.kMotorID2, MotorType.kBrushless);
 
-  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(0);
+  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(ElevatorConstants.kEncoderID);
 
-  private LimitSwitch m_top = new LimitSwitch(1);
-  private LimitSwitch m_bottom = new LimitSwitch(8);
+  private LimitSwitch m_top = new LimitSwitch(ElevatorConstants.kTopSwitchID);
+  private LimitSwitch m_bottom = new LimitSwitch(ElevatorConstants.kBottomSwitchID);
+
 
   /** Creates a new Elevator. */
   public Elevator() {
     m_neo1.getEncoder().setPosition(0);
     m_neo1.setIdleMode(IdleMode.kBrake);
     m_neo2.setIdleMode(IdleMode.kBrake);
+    resetEncoderPosition(); // BOT STARTS AT BOTTOM POS.
   }
 
   public double getEncoderPosition(){
@@ -49,7 +51,6 @@ public class Elevator extends SubsystemBase {
     } else if (!ifBottomTriggered() && speed>0){
       speed = 0;
     }
-    System.out.println(-speed);
     m_neo1.set(-speed);
     m_neo2.set(-speed);
 
@@ -63,14 +64,21 @@ public class Elevator extends SubsystemBase {
     return m_neo2.getEncoder().getVelocity();
   }
 
+  public void resetEncoderPosition(){
+    m_encoder.reset();
+  }
 
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Elevator encoder", getEncoderPosition());
+    SmartDashboard.putNumber("Mech/Elevator/Encoder", getEncoderPosition());
 
-    SmartDashboard.putBoolean("Top switch", m_top.ifTriggered());
-    SmartDashboard.putBoolean("Bottom switch", m_bottom.ifTriggered());
+    SmartDashboard.putBoolean("Mech/Elevator/Top switch", m_top.ifTriggered());
+    SmartDashboard.putBoolean("Mech/Elevator/Bottom switch", m_bottom.ifTriggered());
+
+    if (!ifBottomTriggered()){
+      resetEncoderPosition();;
+    }
   }
 }

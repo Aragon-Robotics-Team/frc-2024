@@ -20,12 +20,12 @@
         "y": 2.0
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 1.9875602692539496
+        "x": 2.9875602692539496,
+        "y": 2.0
       },
       "nextControl": {
-        "x": 3.0,
-        "y": 2.0124397307460504
+        "x": 3.0124397307460504,
+        "y": 2.0
       },
       "isLocked": false,
       "linkedName": null
@@ -52,7 +52,7 @@
     },
     {
       "waypointRelativePos": 1.0,
-      "rotationDegrees": 90.0,
+      "rotationDegrees": 0.0,
       "rotateFast": false
     },
     {
@@ -65,7 +65,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "parallel",
         "data": {
@@ -73,7 +73,7 @@
             {
               "type": "named",
               "data": {
-                "name": "AutoStraighten"
+                "name": "Print"
               }
             }
           ]
