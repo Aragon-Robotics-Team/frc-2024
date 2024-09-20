@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.fasterxml.jackson.databind.util.Named;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -30,7 +30,10 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
+
+
 public class SwerveDrive extends SubsystemBase {
+  
   private final SwerveModule m_frontLeft = new SwerveModule(
     DriveConstants.kFrontLeftDriveId, 
     DriveConstants.kFrontLeftTurnId,
@@ -71,7 +74,6 @@ public class SwerveDrive extends SubsystemBase {
     3
   );
 
-  private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeft.getTranslation(), m_frontRight.getTranslation(), m_backLeft.getTranslation(), m_backRight.getTranslation());
 
   private final AHRS m_imu = new AHRS();
 
@@ -83,7 +85,7 @@ public class SwerveDrive extends SubsystemBase {
 
   private final Field2d m_field = new Field2d();
 
-  private final SwerveDriveOdometry m_odo = new SwerveDriveOdometry(m_kinematics, getAngle(), new SwerveModulePosition[] {
+  private final SwerveDriveOdometry m_odo = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getAngle(), new SwerveModulePosition[] {
     m_frontLeft.getPosition(),
     m_frontRight.getPosition(),
     m_backLeft.getPosition(),
@@ -122,9 +124,6 @@ public class SwerveDrive extends SubsystemBase {
     return m_odo.getPoseMeters();
   }
 
-  public SwerveDriveKinematics getSwerveKinematics(){
-    return m_kinematics;
-  }
 
   public void setModuleStates(SwerveModuleState[] states) {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.kMaxTranslationalMetersPerSecond);
@@ -214,7 +213,7 @@ public class SwerveDrive extends SubsystemBase {
                         new PIDConstants(this.getThetaController().getP(), this.getThetaController().getI(), this.getThetaController().getD()), // Translation PID constants
                          // Rotation PID constants
                         DriveConstants.kMaxTranslationalMetersPerSecond, // Max module speed, in m/s
-                        Units.inchesToMeters(14.0), // Drive base radius in meters. Distance from robot center to furthest module.
+                        Units.inchesToMeters(14.0), // Drive base radius in meters. Distance from robot center to farthest module.
                         new ReplanningConfig() // Default path replanning config. See the API for the options here
                 ),
                 () -> {

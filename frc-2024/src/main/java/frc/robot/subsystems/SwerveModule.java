@@ -12,11 +12,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -38,10 +36,8 @@ public class SwerveModule extends SubsystemBase {
 
   private final int m_moduleId;
 
-  private StatusSignal<Double> m_drivePos;
+  private static StatusSignal<Double> m_drivePos;
   private StatusSignal<Double> m_driveVel;
-
-  private Translation2d m_translation = new Translation2d();
 
   /** Creates a new SwerveModule. */
   public SwerveModule(int driveId, int turnId, int absoluteEncoderPort, double absoluteEncoderOffset,
@@ -122,12 +118,29 @@ public class SwerveModule extends SubsystemBase {
       return;
     }
 
+
+
     state = SwerveModuleState.optimize(state, getState().angle);
+
+//     public static SwerveModuleState optimize(
+//       SwerveModuleState desiredState, Rotation2d currentAngle) {
+//     var delta = desiredState.angle.minus(currentAngle);
+//     if (Math.abs(delta.getDegrees()) > 90.0) {
+//       return new SwerveModuleState(
+//           -desiredState.speedMetersPerSecond,
+//           desiredState.angle.rotateBy(Rotation2d.fromDegrees(180.0))); 
+// ***** Let's say that the desired angle is 0* and the current angle is 179*, then the swerve modules doesn't have to change its rotation by 179* and drive forward, it only has to change its rotation by 1* to 180* and then drive reversed. 
+//     } else {
+//       return new SwerveModuleState(desiredState.speedMetersPerSecond, desiredState.angle);
+//     }
+//   }
+// }
+
     SmartDashboard.putNumber("Swerve/Speed/Commanded/Module_" + m_moduleId, state.speedMetersPerSecond);
     SmartDashboard.putNumber("Swerve/Commanded/Angle_" + m_moduleId, state.angle.getRadians());
     SmartDashboard.putNumber("Swerve/Angle/Commanded/Module_" + m_moduleId, state.angle.getRadians());
 
-    double ff = state.speedMetersPerSecond / DriveConstants.kMaxTranslationalMetersPerSecond;
+    double ff = state.speedMetersPerSecond / DriveConstants.kMaxTranslationalMetersPerSecond; 
     double pid = m_drivingPIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
 
     m_driveMotor.set(ff + pid);
@@ -136,9 +149,7 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putString("Swerve_" + m_moduleId + "_state", state.toString());
   }
 
-  public Translation2d getTranslation(){
-    return new Translation2d(m_translation.getX(), m_translation.getY());
-  }
+
 
   public void stop() {
     m_driveMotor.set(0.0);

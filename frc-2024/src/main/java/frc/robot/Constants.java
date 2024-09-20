@@ -24,8 +24,8 @@ public final class Constants {
   public static final int kJoystick2ID = 1;
 
   public static class DriveConstants {
-    public static final double kDriveGearRatio = 5.9028;
-    public static final double kDriveSensorToMechanismRatio = kDriveGearRatio / Units.inchesToMeters(4 * Math.PI);
+    public static final double kDriveGearRatio = 5.9028; //how many times the motor spindle spins for one turn of the wheels
+    public static final double kDriveSensorToMechanismRatio = kDriveGearRatio / Units.inchesToMeters(4 * Math.PI); //how many motor revolutions it takes to go a meter. 4 in this line is the diameter of the wheels. 
     public static final double kTurnEncoderPositionToRadians = 2.0 * Math.PI;
     public static final double kTranslationalDeadbandMetersPerSecond = 0.001;
     public static final double kMaxTranslationalMetersPerSecond = Units.feetToMeters(18.9);

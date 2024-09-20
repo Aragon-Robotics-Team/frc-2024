@@ -87,7 +87,7 @@ public class RobotContainer {
 
   private final Joystick m_driverJoystick = new Joystick(DriveConstants.kDriveJoystickId);
   private final Joystick m_joystick2 = new Joystick(Constants.kJoystick2ID);
-
+  
   private JoystickButton m_snapButton = new JoystickButton(m_driverJoystick, Config.kSnapButtonID); 
   private JoystickButton m_straightenButton = new JoystickButton(m_driverJoystick, Config.kStraightenButtonID);
   // The robot's subsystems and commands are defined here...
@@ -151,8 +151,8 @@ public class RobotContainer {
   // private JoystickButton m_podiumButton = new JoystickButton(m_joystick2, Config.kPodiumButtonID);
   private JoystickButton m_intakeButton = new JoystickButton(m_joystick2, Config.kIntakeButtonID);
   private JoystickButton m_outtakeButton = new JoystickButton(m_joystick2, Config.kOuttakeButtonID);
-  private JoystickButton m_climbUpButton = new JoystickButton(m_joystick2, Config.kClimbUpButtonID);
-  private JoystickButton m_climbDownButton = new JoystickButton(m_joystick2, Config.kClimbDownButtonID);
+ // private JoystickButton m_climbUpButton = new JoystickButton(m_joystick2, Config.kClimbUpButtonID);
+  //private JoystickButton m_climbDownButton = new JoystickButton(m_joystick2, Config.kClimbDownButtonID);
   private JoystickButton m_visionAimButton = new JoystickButton(m_joystick2, Config.kVisionAimButtonID);
 
   private JoystickButton m_resetHeadingButton = new JoystickButton(m_driverJoystick, Config.kResetHeadingButtonID);
@@ -186,7 +186,6 @@ public class RobotContainer {
     configureBindings();
     SmartDashboard.putData("Swerve/Odo/Reset_Odo", new InstantCommand(() -> m_swerve.resetOdoToPose()));
     SmartDashboard.putData("Swerve/Odo/Reset_Heading", new InstantCommand(() -> m_swerve.resetHeading()));
-    SmartDashboard.putData("Driving/ResetHeading", new InstantCommand(() -> m_swerve.resetHeading()));
   }
 
   /**
@@ -213,7 +212,9 @@ public class RobotContainer {
     m_subwooferButton.whileTrue(m_subwoofer);
     m_outtakeButton.onTrue(m_outtake);
     // m_podiumButton.whileTrue(m_podium);
-    m_visionAimButton.whileTrue(m_visionAim);
+    if (SmartDashboard.getNumber("Vision/ID", 0) == 4 || SmartDashboard.getNumber("Vision/ID", 0) == 7){
+      m_visionAimButton.whileTrue(m_visionAim);
+    }
     // m_climbUpButton.whileTrue(m_climbUp);
     // m_climbDownButton.whileTrue(m_climbDown);
     // m_podiumButton.whileTrue(m_podium);
@@ -252,8 +253,8 @@ public class RobotContainer {
     m_wrist.setDefaultCommand(m_arcadeWrist);
     m_intake.setDefaultCommand(m_runIntake);
     m_shooter.setDefaultCommand(m_shoot);
-    m_elevator.setDefaultCommand(m_arcadeElevator);
+    //m_elevator.setDefaultCommand(m_arcadeElevator);
     m_swerve.setDefaultCommand(m_drive);
     return null;
   }
-}
+}   
