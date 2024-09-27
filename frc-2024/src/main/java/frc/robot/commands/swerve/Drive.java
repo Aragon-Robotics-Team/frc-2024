@@ -4,7 +4,18 @@
 
 package frc.robot.commands.swerve;
 
+import java.util.function.Supplier;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.SwerveDrive;
 
 public class Drive extends Command {
   private static final class Config {
@@ -18,7 +29,8 @@ public class Drive extends Command {
 
   private final SwerveDrive m_swerve;
   
-  private final Supplier<Double> m_xSpeed, m_ySpeed, m_turningSpeed;
+  private double m_xSpeed, m_ySpeed, m_turningSpeed;
+  private final Joystick m_driverJoystick;
   private final SlewRateLimiter m_xLimiter, m_yLimiter, m_turningLimiter;
 
   private final JoystickButton m_visionAimButton, m_snapToZeroButton;
@@ -26,12 +38,10 @@ public class Drive extends Command {
   private PIDController m_pid = new PIDController(Config.kP, Config.kI, Config.kD);
   private double m_targetAngle, m_initAngle, m_currentAngle;
 
-  public Drive(SwerveDrive swerve, Supplier<Double> xSpeed, Supplier<Double> ySpeed, Supplier<Double> turningSpeed, JoystickButton visionAimButton, JoystickButton snapToZeroButton) {
+  public Drive(SwerveDrive swerve, Joystick driverJoystick, JoystickButton visionAimButton, JoystickButton snapToZeroButton) {
     m_swerve = swerve;
 
-    m_xSpeed = xSpeed;
-    m_ySpeed = ySpeed;
-    m_turningSpeed = turningSpeed;
+    m_driverJoystick = driverJoystick;
 
     m_xLimiter = new SlewRateLimiter(DriveConstants.kTeleopMaxAccelMetersPerSecondSquared);
     m_yLimiter = new SlewRateLimiter(DriveConstants.kTeleopMaxAccelMetersPerSecondSquared);
@@ -46,33 +56,45 @@ public class Drive extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_initAngle = m_swerve.getAngle().getDegrees();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { 
-    double xSpeed = m_xSpeed.get();
-    double ySpeed = m_ySpeed.get();
+    m_xSpeed = -m_driverJoystick.getRawAxis(DriveConstants.kJoystickXAxis);
+    m_ySpeed = -m_driverJoystick.getRawAxis(DriveConstants.kJoystickYxis);
     
-    if (m_visionAimButton){
-      
+    if (m_visionAimButton.getAsBoolean()){
+      m_currentAngle = SmartDashboard.getNumber("angle", 0);
+    // m_turningSpeed = m_pid.calculate(m_currentAngle, m_currentAngle + m_targetAngle);
+      m_turningSpeed = m_pid.calculate(m_currentAngle, 0);
+
+    } else if (m_snapToZeroButton.getAsBoolean()){
+      m_targetAngle = 0;
+      SmartDashboard.putNumber("Goal angle degrees", m_targetAngle);
+      m_currentAngle = m_swerve.getAngle().getDegrees();
+
+      m_turningSpeed = m_pid.calculate(m_currentAngle, m_initAngle + m_targetAngle);
+    } else {
+      m_turningSpeed = -m_driverJoystick.getRawAxis(DriveConstants.kJoystickRotAxis);
     }
-    double turningSpeed = m_turningSpeed.get();
 
     // Apply deadband.
-    xSpeed = Math.abs(xSpeed) > DriveConstants.kDeadband ? xSpeed : 0.0;
-    ySpeed = Math.abs(ySpeed) > DriveConstants.kDeadband ? ySpeed : 0.0;
-    turningSpeed = Math.abs(turningSpeed) > DriveConstants.kDeadband ? turningSpeed : 0.0;
-    // turningSpeed = 0.0;
+    m_xSpeed = Math.abs(m_xSpeed) > DriveConstants.kDeadband ? m_xSpeed : 0.0;
+    m_ySpeed = Math.abs(m_ySpeed) > DriveConstants.kDeadband ? m_ySpeed : 0.0;
+    m_turningSpeed = Math.abs(m_turningSpeed) > DriveConstants.kDeadband ? m_turningSpeed : 0.0;
+    // m_turningSpeed = 0.0;
 
     // Limit velocity and acceleration.
-    xSpeed = m_xLimiter.calculate(xSpeed) * DriveConstants.kTeleopMaxSpeedMetersPerSecond;
-    ySpeed = m_yLimiter.calculate(ySpeed) * DriveConstants.kTeleopMaxSpeedMetersPerSecond;
-    turningSpeed = m_turningLimiter.calculate(turningSpeed) * DriveConstants.kTeleopMaxTurningRadiansPerSecond;
-    SmartDashboard.putNumber("Swerve/turningSpeedCommanded", turningSpeed);
+    m_xSpeed = m_xLimiter.calculate(m_xSpeed) * DriveConstants.kTeleopMaxSpeedMetersPerSecond;
+    m_ySpeed = m_yLimiter.calculate(m_ySpeed) * DriveConstants.kTeleopMaxSpeedMetersPerSecond;
+    m_turningSpeed = m_turningLimiter.calculate(m_turningSpeed) * DriveConstants.kTeleopMaxTurningRadiansPerSecond;
+    SmartDashboard.putNumber("Swerve/turningSpeedCommanded", m_turningSpeed);
 
     // Construct chassis speed objects.
-    ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, turningSpeed, m_swerve.getAngle());
+    ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(m_xSpeed, m_ySpeed, m_turningSpeed, m_swerve.getAngle());
     // ChassisSpeeds chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
     // ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, ySpeed, turningSpeed);
 

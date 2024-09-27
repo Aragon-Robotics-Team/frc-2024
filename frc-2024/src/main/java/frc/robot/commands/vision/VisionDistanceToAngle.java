@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -45,7 +46,6 @@ public class VisionDistanceToAngle extends Command {
     System.out.println("Running vision snap");
     m_initAngle = SmartDashboard.getNumber("angle", 0);
     System.out.println("first angle: " + m_initAngle);
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.

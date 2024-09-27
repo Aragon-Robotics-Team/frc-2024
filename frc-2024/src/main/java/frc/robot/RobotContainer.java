@@ -193,10 +193,11 @@ public class RobotContainer {
     m_outtakeButton.onTrue(m_outtake);
     // m_podiumButton.whileTrue(m_podium);
     m_visionAimButton.whileTrue(m_visionAim);
-    // m_climbUpButton.whileTrue(m_climbUp);
-    // m_climbDownButton.whileTrue(m_climbDown);
+    m_climbUpButton.whileTrue(m_climbUp);
+    m_climbDownButton.whileTrue(m_climbDown);
     // m_podiumButton.whileTrue(m_podium);
     // m_elevatorUpButton.whileTrue(m_elevatorUp);
+    
     // m_elevatorDownButton.whileTrue(m_elevatorDown);
     // m_pivotBackwardButton.whileTrue(m_pivotRecalibrate);
 
