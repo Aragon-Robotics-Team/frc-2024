@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
@@ -17,7 +18,9 @@ import frc.robot.subsystems.SwerveDrive;
 public class JoystickDrive extends Command {
   private final SwerveDrive m_swerve;
   private final Supplier<Double> m_xSpeed, m_ySpeed, m_turningSpeed;
+  //private final Supplier<Double> m_ySpeed, m_turningSpeed;
   private final SlewRateLimiter m_xLimiter, m_yLimiter, m_turningLimiter;
+  private Joystick m_joystick;
 
   /** Creates a new JoystickDrive. */
   public JoystickDrive(SwerveDrive swerve, Supplier<Double> xSpeed, Supplier<Double> ySpeed,
@@ -26,6 +29,9 @@ public class JoystickDrive extends Command {
     m_xSpeed = xSpeed;
     m_ySpeed = ySpeed;
     m_turningSpeed = turningSpeed;
+    
+
+    
 
     m_xLimiter = new SlewRateLimiter(DriveConstants.kTeleopMaxAccelMetersPerSecondSquared);
     m_yLimiter = new SlewRateLimiter(DriveConstants.kTeleopMaxAccelMetersPerSecondSquared);
@@ -44,7 +50,9 @@ public class JoystickDrive extends Command {
   public void execute() {
     // Get joystick inputs.
     double xSpeed = m_xSpeed.get();
+    //xSpeed = 0.5; (testing)
     double ySpeed = m_ySpeed.get();
+    //ySpeed = 0; (testing)
     xSpeed *= Math.signum(xSpeed) * xSpeed;
     ySpeed *= Math.signum(ySpeed) * ySpeed;
     double turningSpeed = m_turningSpeed.get();

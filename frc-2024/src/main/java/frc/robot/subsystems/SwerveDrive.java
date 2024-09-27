@@ -158,7 +158,7 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public Rotation2d getAngle() {
-    return Rotation2d.fromDegrees(Math.IEEEremainder(m_imu.getAngle(), 360));
+    return Rotation2d.fromDegrees(Math.IEEEremainder(-m_imu.getAngle(), 360));
   }
 
   public PIDController getXController(){
