@@ -46,26 +46,26 @@ public final class Constants {
       new Translation2d(0.3556 - 0.644, -0.3556 + 0.063)
     );
     // TODO: gather all of these constants.
-    public static int kFrontLeftDriveId = 51;
-    public static int kFrontLeftTurnId = 1;
+    public static int kFrontLeftDriveID = 51;
+    public static int kFrontLeftTurnID = 1;
     public static int kFrontLeftAbsoluteEncoderPort = 9;
     public static double kFrontLeftAbsoluteEncoderOffset = -0.529990463821544 - (Math.PI / 2.0);
     public static boolean kFrontLeftDriveReversed = false;
 
-    public static int kFrontRightDriveId = 52;
-    public static int kFrontRightTurnId = 3;
+    public static int kFrontRightDriveID = 52;
+    public static int kFrontRightTurnID = 3;
     public static int kFrontRightAbsoluteEncoderPort = 7;
     public static double kFrontRightAbsoluteEncoderOffset = 1.415447275814819 + (Math.PI / 2.0);
     public static boolean kFrontRightDriveReversed = true;
 
-    public static int kBackLeftDriveId = 53;
-    public static int kBackLeftTurnId = 7;
+    public static int kBackLeftDriveID = 53;
+    public static int kBackLeftTurnID = 7;
     public static int kBackLeftAbsoluteEncoderPort = 8;
     public static double kBackLeftAbsoluteEncoderOffset = 1.253910661599266 + (Math.PI / 2.0);
     public static boolean kBackLeftDriveReversed = false;
 
-    public static int kBackRightDriveId = 54;
-    public static int kBackRightTurnId = 5;
+    public static int kBackRightDriveID = 54;
+    public static int kBackRightTurnID = 5;
     public static int kBackRightAbsoluteEncoderPort = 6;
     public static double kBackRightAbsoluteEncoderOffset = -0.456511594330128 - (Math.PI / 2.0);
     public static boolean kBackRightDriveReversed = true;
@@ -74,7 +74,7 @@ public final class Constants {
     public static double kTeleopMaxAccelMetersPerSecondSquared = 2.5;
     // public static double kTeleopMaxAccelMetersPerSecondSquared = 0.5;
     public static double kTeleopMaxAngularAccelBotRotsPerSecondSquared = 3;
-    // public static double kTeleopMaxAngularAccelRadiansPerSecondSquared = 0.5;
+    public static double kTeleopMaxAngularAccelRadiansPerSecondSquared = 0.5;
     // public static double kTeleopMaxSpeedMetersPerSecond = kMaxTranslationalMetersPerSecond * 0.8;
     public static double kTeleopMaxSpeedMetersPerSecond = kMaxTranslationalMetersPerSecond;
     // public static double kTeleopMaxTurningRadiansPerSecond = 4.0 * Math.PI;
