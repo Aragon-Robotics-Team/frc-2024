@@ -36,12 +36,12 @@ public class Wrist extends SubsystemBase {
     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     config.Feedback.SensorToMechanismRatio = WristConstants.kGearRatio;
 
-    m_falcon.getConfigurator().apply(config);
+    // m_falcon.getConfigurator().apply(config);
 
-    m_falcon.setPosition(0);
+    // m_falcon.setPosition(0);
 
-    m_velocity = m_falcon.getVelocity();
-    m_position = m_falcon.getPosition();
+    // m_velocity = m_falcon.getVelocity();
+    // m_position = m_falcon.getPosition();
   }
 
   public double getEncoderPosition(){
@@ -82,14 +82,14 @@ public class Wrist extends SubsystemBase {
   }
 
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Mech/Wrist/Encoder", getEncoderPosition());
-    SmartDashboard.putBoolean("Mech/Wrist/Forward switch", ifForwardTriggered());
-    SmartDashboard.putBoolean("Mech/Wrist/Backward switch", ifBackwardTriggered());
-    SmartDashboard.putNumber("Mech/Wrist/Motor1Current", m_falcon.getSupplyCurrent().refresh().getValueAsDouble()); 
-    SmartDashboard.putNumber("PIDTuning/wrist_encoder", getEncoderPosition());
-  }
+  // @Override
+  // public void periodic() {
+  //   // This method will be called once per scheduler run
+  //   SmartDashboard.putNumber("Mech/Wrist/Encoder", getEncoderPosition());
+  //   SmartDashboard.putBoolean("Mech/Wrist/Forward switch", ifForwardTriggered());
+  //   SmartDashboard.putBoolean("Mech/Wrist/Backward switch", ifBackwardTriggered());
+  //   SmartDashboard.putNumber("Mech/Wrist/Motor1Current", m_falcon.getSupplyCurrent().refresh().getValueAsDouble()); 
+  //   SmartDashboard.putNumber("PIDTuning/wrist_encoder", getEncoderPosition());
+  // }
 }
 

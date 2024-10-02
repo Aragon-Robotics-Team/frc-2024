@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
 
-  private PhotonCamera m_cam = new PhotonCamera("photonvision"); //TODO: Change to actual camera name
+  private PhotonCamera m_cam = new PhotonCamera("Arducam_OV9281_USB_Camera"); //TODO: Change to actual camera name
   private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //TODO: Change this later!
   
   private PhotonPipelineResult m_result;
@@ -51,6 +51,7 @@ public class Vision extends SubsystemBase {
   private PhotonPoseEstimator m_poseEstimator;
   /** Creates a new Vision. */
   public Vision() {
+    
   }
 
   public double getYaw(){

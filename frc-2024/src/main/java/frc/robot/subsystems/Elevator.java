@@ -95,7 +95,7 @@ public class Elevator extends SubsystemBase {
     SmartDashboard.putNumber("Mech/Elevator/Encoder", getEncoderPosition());
 
     SmartDashboard.putBoolean("Mech/Elevator/Top switch", m_top.ifTriggered());
-    SmartDashboard.putBoolean("Mech/Elevator/Bottom switch", m_bottom.ifTriggered());
+    // SmartDashboard.putBoolean("Mech/Elevator/Bottom switch", m_bottom.ifTriggered());
 
     if (!ifBottomOpen()){
       resetEncoderPosition();;
