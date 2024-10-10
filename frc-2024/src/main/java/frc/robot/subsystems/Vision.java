@@ -51,6 +51,7 @@ public class Vision extends SubsystemBase {
   private PhotonPoseEstimator m_poseEstimator;
   /** Creates a new Vision. */
   public Vision() {
+    
   }
 
   public double getYaw(){
