@@ -21,7 +21,7 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   public Intake() {
     //setInverted depending on which way the motor spins?
-    // m_intakeMotor.burnFlash(); //does something to preven burnouts?
+    m_intakeMotor.burnFlash(); //does something to preven burnouts?
   }
 
   public boolean getSwitchTriggered() {
@@ -32,9 +32,9 @@ public class Intake extends SubsystemBase {
     m_intakeMotor.set(speed);
   }
 // 
-  // public Boolean ifSensorTriggered(){
-  //   return m_sensor.get();
-  // }
+  public Boolean ifSensorTriggered(){
+    return m_sensor.get();
+  }
 
   @Override
   public void periodic() {
