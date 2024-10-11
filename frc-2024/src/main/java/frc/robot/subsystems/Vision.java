@@ -98,17 +98,21 @@ public class Vision extends SubsystemBase {
     m_targets = m_result.getTargets();
     m_bestTarget = m_result.getBestTarget();
 
-    m_yaw = m_bestTarget.getYaw();
-    m_pitch = m_bestTarget.getPitch();
-    m_area = m_bestTarget.getArea();
-    m_skew = m_bestTarget.getSkew();
+    if(m_bestTarget != null){
+       m_yaw = m_bestTarget.getYaw();
+       m_pitch = m_bestTarget.getPitch();
+       m_area = m_bestTarget.getArea();
+       m_skew = m_bestTarget.getSkew();
+       m_camToTarget = m_bestTarget.getBestCameraToTarget();
+       m_corners = m_bestTarget.getDetectedCorners();
+       m_ID = m_bestTarget.getFiducialId();
+       m_poseAmbiguity = m_bestTarget.getPoseAmbiguity();
+       m_robotPose = PhotonUtils.estimateFieldToRobotAprilTag(m_camToTarget, m_aprilTagFieldLayout.getTagPose(m_ID).get(), m_robotToCam);
+       m_poseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,m_cam, m_robotToCam);
 
-    m_camToTarget = m_bestTarget.getBestCameraToTarget();
-    m_corners = m_bestTarget.getDetectedCorners();
-    m_ID = m_bestTarget.getFiducialId();
-    m_poseAmbiguity = m_bestTarget.getPoseAmbiguity();
+    }
+   
 
-    m_robotPose = PhotonUtils.estimateFieldToRobotAprilTag(m_camToTarget, m_aprilTagFieldLayout.getTagPose(m_ID).get(), m_robotToCam);
-    m_poseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,m_cam, m_robotToCam);
+   
   }
 }

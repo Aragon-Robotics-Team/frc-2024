@@ -91,7 +91,7 @@ public class RobotContainer {
 
   private PhotonCamera m_cam = new PhotonCamera("Arducam_OV9281_USB_Camera");
   private Vision m_vision = new Vision();
-  private VisionTest m_visionTest = new VisionTest(m_cam);
+  private VisionTest m_visionTest = new VisionTest(m_cam, m_vision);
 
   private Pivot m_pivot = new Pivot();
   //private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_joystick2);
