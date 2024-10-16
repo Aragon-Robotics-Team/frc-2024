@@ -10,6 +10,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,6 +41,9 @@ public class Drive extends Command {
   private PIDController m_pid = new PIDController(Config.kP, Config.kI, Config.kD);
   private double m_targetAngle, m_initAngle, m_currentAngle;
 
+  private DataLog m_log = DataLogManager.getLog();
+  private DoubleLogEntry m_driveLog;
+
   public Drive(SwerveDrive swerve, Joystick driverJoystick, JoystickButton visionAimButton, JoystickButton snapToZeroButton) {
     m_swerve = swerve;
 
@@ -58,6 +64,7 @@ public class Drive extends Command {
   @Override
   public void initialize() {
     m_initAngle = m_swerve.getAngle().getDegrees();
+    m_driveLog = new DoubleLogEntry(m_log, "/drive");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -65,6 +72,9 @@ public class Drive extends Command {
   public void execute() { 
     m_xSpeed = -m_driverJoystick.getRawAxis(DriveConstants.kJoystickXAxis);
     m_ySpeed = -m_driverJoystick.getRawAxis(DriveConstants.kJoystickYxis);
+    
+    m_driveLog.append(m_xSpeed);
+    m_driveLog.append(m_ySpeed);
     
     if (m_visionAimButton.getAsBoolean()){
       m_currentAngle = SmartDashboard.getNumber("angle", 0);
