@@ -6,6 +6,11 @@ package frc.robot;
 
 import org.photonvision.PhotonCamera;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 // import com.pathplanner.lib.auto.AutoBuilder;
 
 // import edu.wpi.first.wpilibj.Joystick;
@@ -89,64 +94,63 @@ public class RobotContainer {
   // private JoystickButton m_straightenButton = new JoystickButton(m_driverJoystick, Config.kStraightenButtonID);
   // The robot's subsystems and commands are defined here...
 
-  private PhotonCamera m_cam = new PhotonCamera("Arducam_OV9281_USB_Camera");
   private Vision m_vision = new Vision();
-  private VisionTest m_visionTest = new VisionTest(m_cam, m_vision);
+  private VisionTest m_visionTest = new VisionTest(m_vision);
 
-  private Pivot m_pivot = new Pivot();
-  //private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_joystick2);
-  private PIDFront m_pivotForward = new PIDFront(m_pivot);
-  private PIDBack m_pivotBackward = new PIDBack(m_pivot);
-  private PivotRecalibrate m_pivotRecalibrate = new PivotRecalibrate(m_pivot);
+  // private Pivot m_pivot = new Pivot();
+  // //private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_joystick2);
+  // private PIDFront m_pivotForward = new PIDFront(m_pivot);
+  // private PIDBack m_pivotBackward = new PIDBack(m_pivot);
+  // private PivotRecalibrate m_pivotRecalibrate = new PivotRecalibrate(m_pivot);
 
-  private Elevator m_elevator = new Elevator();
-  //private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_elevator, m_joystick2);
-  private PIDUp m_elevatorUp = new PIDUp(m_elevator);
-  private PIDDown m_elevatorDown = new PIDDown(m_elevator);
-  private ElevatorRecalibrate m_elevatorRecalibrate = new ElevatorRecalibrate(m_elevator);
+  // private Elevator m_elevator = new Elevator();
+  // //private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_elevator, m_joystick2);
+  // private PIDUp m_elevatorUp = new PIDUp(m_elevator);
+  // private PIDDown m_elevatorDown = new PIDDown(m_elevator);
+  //private ElevatorRecalibrate m_elevatorRecalibrate = new ElevatorRecalibrate(m_elevator);
 
-  private Wrist m_wrist = new Wrist();
+  //private Wrist m_wrist = new Wrist();
   // private ArcadeWrist m_arcadeWrist = new ArcadeWrist(m_wrist, m_joystick2);
-  private PIDRaise m_wristForward = new PIDRaise(m_wrist);
+ // private PIDRaise m_wristForward = new PIDRaise(m_wrist);
   // private JoystickButton m_wristForwardButton = new JoystickButton(m_joystick2, Config.kWristForwardButtonID);
-  private PIDDrop m_wristBackward = new PIDDrop(m_wrist);
+  //private PIDDrop m_wristBackward = new PIDDrop(m_wrist);
 
-  private Intake m_intake = new Intake();
+  //private Intake m_intake = new Intake();
   //private ArcadeIntake m_runIntake = new ArcadeIntake(m_intake, m_joystick2);
   // private Outtake m_outtake = new Outtake(m_intake, -0.6);
-  private OutakeToSwitch m_outtake = new OutakeToSwitch(m_intake);
+  //private OutakeToSwitch m_outtake = new OutakeToSwitch(m_intake);
 
-  private Shooter m_shooter = new Shooter();
+  //private Shooter m_shooter = new Shooter();
   //private ArcadeShoot m_shoot = new ArcadeShoot(m_shooter, m_joystick2);
-  private ReverseShooter m_reverseShooter = new ReverseShooter(m_shooter, -0.5);
+  //private ReverseShooter m_reverseShooter = new ReverseShooter(m_shooter, -0.5);
 
-  private ForwardIntake m_forwardIntake = new ForwardIntake(m_pivot, m_wrist);
-  private BackwardIntake m_backwardIntake = new BackwardIntake(m_pivot, m_wrist);
-  private AmpScore m_ampScore = new AmpScore(m_pivot, m_wrist, m_elevator);
-  private ClimbUp m_climbUp = new ClimbUp(m_pivot, m_wrist, m_elevator);
-  private GroundIntake m_groundIntake = new GroundIntake(m_pivot, m_wrist, m_elevator);
-  private Subwoofer m_subwoofer = new Subwoofer(m_pivot, m_wrist, m_elevator);
-  private Stowed m_stowed = new Stowed(m_pivot, m_wrist, m_elevator);
-  private Podium m_podium = new Podium(m_pivot, m_wrist, m_elevator);
-  private AutoShoot m_autoShoot = new AutoShoot(m_intake, m_shooter);
-  private AutoIntake m_autoIntake = new AutoIntake(m_intake);
-  private ClimbDown m_climbDown = new ClimbDown(m_pivot, m_wrist, m_elevator);
+  // private ForwardIntake m_forwardIntake = new ForwardIntake(m_pivot, m_wrist);
+  // private BackwardIntake m_backwardIntake = new BackwardIntake(m_pivot, m_wrist);
+  // private AmpScore m_ampScore = new AmpScore(m_pivot, m_wrist, m_elevator);
+  // private ClimbUp m_climbUp = new ClimbUp(m_pivot, m_wrist, m_elevator);
+  // private GroundIntake m_groundIntake = new GroundIntake(m_pivot, m_wrist, m_elevator);
+  // private Subwoofer m_subwoofer = new Subwoofer(m_pivot, m_wrist, m_elevator);
+  // private Stowed m_stowed = new Stowed(m_pivot, m_wrist, m_elevator);
+  // private Podium m_podium = new Podium(m_pivot, m_wrist, m_elevator);
+  // private AutoShoot m_autoShoot = new AutoShoot(m_intake, m_shooter);
+  // private AutoIntake m_autoIntake = new AutoIntake(m_intake);
+  // private ClimbDown m_climbDown = new ClimbDown(m_pivot, m_wrist, m_elevator);
 
-  private RightUnderStage m_rightUnderStage = new RightUnderStage(m_pivot, m_wrist, m_elevator);
+  // private RightUnderStage m_rightUnderStage = new RightUnderStage(m_pivot, m_wrist, m_elevator);
 
-  private final SwerveDrive m_swerve = new SwerveDrive(m_stowed, m_autoShoot, m_autoIntake, m_groundIntake, m_outtake, m_subwoofer, m_rightUnderStage);
+  // private final SwerveDrive m_swerve = new SwerveDrive(m_stowed, m_autoShoot, m_autoIntake, m_groundIntake, m_outtake, m_subwoofer, m_rightUnderStage);
 
-  // private final JoystickDrive m_drive = new JoystickDrive(m_swerve, 
-  //   () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickXAxis),
-  //   () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickYxis),
-  //   () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickRotAxis)
-  // );
+  // // private final JoystickDrive m_drive = new JoystickDrive(m_swerve, 
+  // //   () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickYxis),
+  // //   () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickRotAxis)
+  // //   () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickXAxis),
+  // // );
   
-  private SnapToAngle m_snap = new SnapToAngle(m_swerve);
-  private AutoStraighten m_straighten = new AutoStraighten(m_swerve);
-  private VisionSnapToAngle m_visionSnap = new VisionSnapToAngle(m_swerve);
+  // private SnapToAngle m_snap = new SnapToAngle(m_swerve);
+  // private AutoStraighten m_straighten = new AutoStraighten(m_swerve);
+  // private VisionSnapToAngle m_visionSnap = new VisionSnapToAngle(m_swerve);
   
-  private VisionAim m_visionAim = new VisionAim(m_swerve, m_wrist, m_pivot);
+  // private VisionAim m_visionAim = new VisionAim(m_swerve, m_wrist, m_pivot);
 
   
 
@@ -162,7 +166,7 @@ public class RobotContainer {
 
   // private JoystickButton m_resetHeadingButton = new JoystickButton(m_driverJoystick, 1);
 
-  //private SendableChooser<Command> m_autoChooser;
+  // private SendableChooser<Command> m_autoChooser;
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -172,10 +176,11 @@ public class RobotContainer {
     // // m_swerve.setDefaultCommand(m_drive);
     // // Configure the trigger bindings
 
-    // configureBindings();
+    configureBindings();
     // SmartDashboard.putData("Swerve/Odo/Reset_Odo", new InstantCommand(() -> m_swerve.resetOdoToPose()));
     // SmartDashboard.putData("Swerve/Odo/Reset_Heading", new InstantCommand(() -> m_swerve.resetHeading()));
     // SmartDashboard.putData("Driving/ResetHeading", new InstantCommand(() -> m_swerve.resetHeading()));
+    //SmartDashboard.putNumber("visiontest",m_vision.getYaw());
   }
 
   /**
@@ -223,24 +228,25 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  // public Command getAutonomousCommand() {
-  //   // An example command will be run in autonomous
-  //   //return m_autoChooser.getSelected();
-  //   // return new PivotFF(m_pivot);
-  //   // return new TrapezoidalPivot(m_pivot, 0.16);
-  //   // return new WristFF(m_wrist);
-  //   // return new TrapezoidalWrist(m_wrist, -0.24);
-  // }
+  public Command getAutonomousCommand() {
+    // An example command will be run in autonomous
+    //return m_autoChooser.getSelected();
+    return m_visionTest;
+    // return new PivotFF(m_pivot);
+    // return new TrapezoidalPivot(m_pivot, 0.16);
+    // return new WristFF(m_wrist);
+    // return new TrapezoidalWrist(m_wrist, -0.24);
+  }
 
   public Command getTeleopCommand(){
-    //m_vision.setDefaultCommand(m_visionTest);
+    m_vision.setDefaultCommand(m_visionTest);
     // m_pivot.setDefaultCommand(m_arcadePivot);
     // m_wrist.setDefaultCommand(m_arcadeWrist);
     // m_intake.setDefaultCommand(m_runIntake);
     // m_shooter.setDefaultCommand(m_shoot);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_swerve.setDefaultCommand(m_drive);
-    return m_visionTest;
+    return null;
   }
 
 }

@@ -24,6 +24,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
@@ -54,9 +55,15 @@ public class Vision extends SubsystemBase {
     
   }
 
+  public PhotonCamera getCam(){
+    return m_cam;
+  }
+
   public double getYaw(){
     return m_yaw;
   }
+
+ 
 
   public double getPitch(){
     return m_pitch;
@@ -86,19 +93,23 @@ public class Vision extends SubsystemBase {
     return m_poseAmbiguity;
   }
 
-  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(){
-    return m_poseEstimator.update();
-  }
+  // public Optional<EstimatedRobotPose> getEstimatedGlobalPose(){
+  //   return m_poseEstimator.update();
+  // }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     m_result = m_cam.getLatestResult();
     m_hasTargets = m_result.hasTargets();
-    m_targets = m_result.getTargets();
-    m_bestTarget = m_result.getBestTarget();
+    if (m_hasTargets){
+      m_targets = m_result.getTargets();
+      m_bestTarget = m_result.getBestTarget();
+      //System.out.println("running");
+    }
 
     if(m_bestTarget != null){
+      //m_vision = m_bestTarget.getCam();
        m_yaw = m_bestTarget.getYaw();
        m_pitch = m_bestTarget.getPitch();
        m_area = m_bestTarget.getArea();
@@ -107,8 +118,8 @@ public class Vision extends SubsystemBase {
        m_corners = m_bestTarget.getDetectedCorners();
        m_ID = m_bestTarget.getFiducialId();
        m_poseAmbiguity = m_bestTarget.getPoseAmbiguity();
-       m_robotPose = PhotonUtils.estimateFieldToRobotAprilTag(m_camToTarget, m_aprilTagFieldLayout.getTagPose(m_ID).get(), m_robotToCam);
-       m_poseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,m_cam, m_robotToCam);
+       //m_robotPose = PhotonUtils.estimateFieldToRobotAprilTag(m_camToTarget, m_aprilTagFieldLayout.getTagPose(m_ID).get(), m_robotToCam);
+       //m_poseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,m_cam, m_robotToCam);
 
     }
    
