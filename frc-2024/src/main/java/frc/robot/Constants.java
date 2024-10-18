@@ -79,7 +79,7 @@ public final class Constants {
     public static double kTeleopMaxSpeedMetersPerSecond = kMaxTranslationalMetersPerSecond;
     // public static double kTeleopMaxTurningRadiansPerSecond = 4.0 * Math.PI;
     public static double kTeleopMaxTurningRadiansPerSecond = 1.5 * Math.PI;
-    public static int kDriveJoystickId = 0;
+    public static int kDriveJoystickID = 0;
     public static int kJoystickXAxis = 1;
     public static int kJoystickYxis = 0;
     public static int kJoystickRotAxis = 4;
@@ -143,7 +143,7 @@ public final class Constants {
     public static final double kP = 0.5;
     public static final double kI = 0;
     public static final double kD = 0;
-    public static final double kDeadBand = 0.05;
+    public static final double kDeadband = 0.05;
     public static final double kEncoderOffset = 0.886434;
 
     public static final double kCruiseVelocity = 0.4; // RPS

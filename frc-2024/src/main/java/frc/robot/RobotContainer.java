@@ -87,8 +87,13 @@ public class RobotContainer {
   }
   
 
+<<<<<<< HEAD
   // private final Joystick m_driverJoystick = new Joystick(DriveConstants.kDriveJoystickId);
   // private final Joystick m_joystick2 = new Joystick(Constants.kJoystick2ID);
+=======
+  private final Joystick m_driverJoystick = new Joystick(DriveConstants.kDriveJoystickID);
+  private final Joystick m_joystick2 = new Joystick(Constants.kJoystick2ID);
+>>>>>>> cb0ebb7 (Fixed some conventions stuff)
 
   // private JoystickButton m_snapButton = new JoystickButton(m_driverJoystick, Config.kSnapButtonID); 
   // private JoystickButton m_straightenButton = new JoystickButton(m_driverJoystick, Config.kStraightenButtonID);
