@@ -32,8 +32,8 @@ import frc.robot.Constants.DriveConstants;
 
 public class SwerveDrive extends SubsystemBase {
   private final SwerveModule m_frontLeft = new SwerveModule(
-    DriveConstants.kFrontLeftDriveId, 
-    DriveConstants.kFrontLeftTurnId,
+    DriveConstants.kFrontLeftDriveID, 
+    DriveConstants.kFrontLeftTurnID,
     DriveConstants.kFrontLeftAbsoluteEncoderPort, 
     DriveConstants.kFrontLeftAbsoluteEncoderOffset, 
     DriveConstants.kFrontLeftDriveReversed,
@@ -42,8 +42,8 @@ public class SwerveDrive extends SubsystemBase {
   );
 
   private final SwerveModule m_frontRight = new SwerveModule(
-    DriveConstants.kFrontRightDriveId, 
-    DriveConstants.kFrontRightTurnId,
+    DriveConstants.kFrontRightDriveID, 
+    DriveConstants.kFrontRightTurnID,
     DriveConstants.kFrontRightAbsoluteEncoderPort, 
     DriveConstants.kFrontRightAbsoluteEncoderOffset, 
     DriveConstants.kFrontRightDriveReversed, 
@@ -52,8 +52,8 @@ public class SwerveDrive extends SubsystemBase {
   );
 
   private final SwerveModule m_backLeft = new SwerveModule(
-    DriveConstants.kBackLeftDriveId, 
-    DriveConstants.kBackLeftTurnId,
+    DriveConstants.kBackLeftDriveID, 
+    DriveConstants.kBackLeftTurnID,
     DriveConstants.kBackLeftAbsoluteEncoderPort, 
     DriveConstants.kBackLeftAbsoluteEncoderOffset, 
     DriveConstants.kBackLeftDriveReversed, 
@@ -62,8 +62,8 @@ public class SwerveDrive extends SubsystemBase {
   );
 
   private final SwerveModule m_backRight = new SwerveModule(
-    DriveConstants.kBackRightDriveId, 
-    DriveConstants.kBackRightTurnId,
+    DriveConstants.kBackRightDriveID, 
+    DriveConstants.kBackRightTurnID,
     DriveConstants.kBackRightAbsoluteEncoderPort, 
     DriveConstants.kBackRightAbsoluteEncoderOffset, 
     DriveConstants.kBackRightDriveReversed, 
