@@ -8,6 +8,9 @@ import org.littletonrobotics.junction.LoggedRobot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -27,8 +30,37 @@ public class Robot extends LoggedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
+   DoubleLogEntry frontLeft;
+   DoubleLogEntry frontRight;
+   DoubleLogEntry backLeft;
+   DoubleLogEntry backRight;
+
+   DoubleLogEntry frontLeftCommand;
+   DoubleLogEntry frontRightCommand;
+   DoubleLogEntry backLeftCommand;
+   DoubleLogEntry backRightCommand;
+   
+
   @Override
   public void robotInit() {
+
+    DataLogManager.start();
+
+    DataLog log = DataLogManager.getLog();
+
+    frontLeft = new DoubleLogEntry(log, "/my/frontLeft");
+    frontRight = new DoubleLogEntry(log, "/my/frontRight");
+    backLeft = new DoubleLogEntry(log, "/my/backLeft");
+    backRight = new DoubleLogEntry(log, "/my/backRight");
+
+    frontLeftCommand = new DoubleLogEntry(log, "/my/frontLeftCommand");
+    frontRightCommand = new DoubleLogEntry(log, "/my/frontRightCommand");
+    backLeftCommand = new DoubleLogEntry(log, "/my/backLeftCommand");
+    backRightCommand = new DoubleLogEntry(log, "/my/backRightCommand");
+
+
+    
     // CameraServer.startAutomaticCapture();
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
@@ -68,11 +100,25 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    
+
+    
+    
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    frontLeft.append(m_robotContainer.m_swerve.getFrontLeftRotation());
+    frontRight.append(m_robotContainer.m_swerve.getFrontRightRotation());
+    backLeft.append(m_robotContainer.m_swerve.getBackLeftRotation());
+    backRight.append(m_robotContainer.m_swerve.getBackRightRotation());
+
+    frontLeftCommand.append(m_robotContainer.m_swerve.getFrontLeftRotationCommand());
+    frontRightCommand.append(m_robotContainer.m_swerve.getFrontRightRotationCommand());
+    backLeftCommand.append(m_robotContainer.m_swerve.getBackLeftRotation());
+    backRightCommand.append(m_robotContainer.m_swerve.getBackRightRotationCommand());
+    
   }
 
   @Override

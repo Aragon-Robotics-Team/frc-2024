@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -68,6 +69,8 @@ public class SwerveModule extends SubsystemBase {
     // Configure Turn Motor
     m_turnMotor.setIdleMode(IdleMode.kBrake);
     m_turnMotor.setInverted(turningReversed);
+    //m_turnMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5,200);
+    //m_turnMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 200);
 
     TalonFXConfiguration driveConfig = new TalonFXConfiguration();
 
@@ -82,7 +85,9 @@ public class SwerveModule extends SubsystemBase {
     m_drivePos = m_driveMotor.getPosition();
     m_driveVel = m_driveMotor.getVelocity();
 
+
     SmartDashboard.putData("Swerve/Distance/reset_" + m_moduleId,  new InstantCommand(() -> resetEncoders()));
+    
 
   }
 
@@ -116,6 +121,9 @@ public class SwerveModule extends SubsystemBase {
     return new SwerveModulePosition(getDrivePosition(), getRotation());
   }
 
+  double rotationCommand;
+  double rotation;
+
   public void setDesiredState(SwerveModuleState state) {
     if (Math.abs(state.speedMetersPerSecond) < DriveConstants.kTranslationalDeadbandMetersPerSecond) {
       stop();
@@ -131,10 +139,24 @@ public class SwerveModule extends SubsystemBase {
     double pid = m_drivingPIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
 
     m_driveMotor.set(ff + pid);
-    m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians()));
-
+    m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians())); // THE ACTUAL AND COMMANDED VALUES ARE THE SAME DAMN THING
+    rotation = getRotation().getRadians();
+    rotationCommand = ((Math.toDegrees(((state.angle).getRadians())) % 360 + 540)) % 360 - 180;
+    
     SmartDashboard.putString("Swerve_" + m_moduleId + "_state", state.toString());
   }
+
+
+  public double getRotationCommand()
+  {
+    return rotationCommand;
+  }
+
+
+  
+
+
+
 
   public Translation2d getTranslation(){
     return new Translation2d(m_translation.getX(), m_translation.getY());

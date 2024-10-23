@@ -83,7 +83,7 @@ public class SwerveDrive extends SubsystemBase {
 
   private final Field2d m_field = new Field2d();
 
-  private final SwerveDriveOdometry m_odo = new SwerveDriveOdometry(m_kinematics, getAngle(), new SwerveModulePosition[] {
+  private final SwerveDriveOdometry m_odo = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getAngle(), new SwerveModulePosition[] {
     m_frontLeft.getPosition(),
     m_frontRight.getPosition(),
     m_backLeft.getPosition(),
@@ -123,7 +123,7 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public SwerveDriveKinematics getSwerveKinematics(){
-    return m_kinematics;
+    return DriveConstants.kDriveKinematics;
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
@@ -134,6 +134,13 @@ public class SwerveDrive extends SubsystemBase {
     m_backLeft.setDesiredState(states[2]);
     m_backRight.setDesiredState(states[3]);
   }
+
+  Rotation2d degree = new Rotation2d(Math.PI/2);
+  SwerveModuleState frontLeft = new SwerveModuleState(3.0, degree);
+  SwerveModuleState frontRight = new SwerveModuleState(3.0, degree);
+  SwerveModuleState backLeft = new SwerveModuleState(3.0, degree);
+  SwerveModuleState backRight = new SwerveModuleState(3.0, degree);
+  SwerveModuleState[] testStates = {frontLeft, frontRight, backLeft, backRight};
 
   public void setSwerveModuleStatesAuto(SwerveModuleState[] states) {
     setModuleStates(states);  
@@ -181,6 +188,50 @@ public class SwerveDrive extends SubsystemBase {
       m_backRight.getState()
     );
   }
+
+ 
+  public double getFrontLeftRotation()
+
+  {
+    return ((Math.toDegrees(((m_frontLeft.getRotation()).getRadians())) % 360 + 540)) % 360 - 180;
+  }
+
+  public double getFrontRightRotation()
+  {
+    return ((Math.toDegrees(((m_frontRight.getRotation()).getRadians())) % 360 + 540)) % 360 - 180;
+  }
+
+  public double getBackLeftRotation()
+  {
+    return ((Math.toDegrees(((m_backLeft.getRotation()).getRadians())) % 360 + 720)) % 360 - 180;
+  }
+
+  public double getBackRightRotation()
+  {
+    return ((Math.toDegrees(((m_backRight.getRotation()).getRadians())) % 360 + 540)) % 360 - 180;
+  }
+
+  public double getFrontLeftRotationCommand()
+  {
+    return m_frontLeft.getRotationCommand();
+  }
+
+  public double getFrontRightRotationCommand()
+  {
+    return m_frontRight.getRotationCommand();
+  }
+
+  public double getBackLeftRotationCommand()
+  {
+    return m_backLeft.getRotationCommand();
+  }
+
+  public double getBackRightRotationCommand()
+  {
+    return m_backRight.getRotationCommand();
+  }
+
+
 
   public void driveRobotRelative(ChassisSpeeds speeds) { 
     SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
@@ -253,8 +304,11 @@ public class SwerveDrive extends SubsystemBase {
     m_backRight.stop();
   }
 
+  
+
   @Override
   public void periodic() {
+
     m_odo.update(getAngle(),
       new SwerveModulePosition[] {
         m_frontLeft.getPosition(), m_frontRight.getPosition(),
@@ -275,6 +329,11 @@ public class SwerveDrive extends SubsystemBase {
     m_yStartPose = SmartDashboard.getNumber("Swerve/Odo/Y", 2);
     SmartDashboard.putNumber("Swerve/Odo/X", m_xStartPose);
     SmartDashboard.putNumber("Swerve/Odo/Y", m_yStartPose);
+
+    SmartDashboard.putNumber("Swerve/Odo/FrontLeftRotation", getFrontLeftRotation());
+    SmartDashboard.putNumber("Swerve/Odo/FrontRightRotation", getFrontRightRotation());
+    SmartDashboard.putNumber("Swerve/Odo/BackLeftRotation", getBackLeftRotation());
+    SmartDashboard.putNumber("Swerve/Odo/BackRightRotation", getBackRightRotation());
 
     
     // // System.out.println("Chassis speeds:" + this.getChassisSpeeds());

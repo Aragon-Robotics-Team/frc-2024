@@ -133,7 +133,7 @@ public class RobotContainer {
 
   private RightStage m_rightUnderStage = new RightStage(m_pivot, m_wrist, m_elevator);
 
-  private final SwerveDrive m_swerve = new SwerveDrive(m_stowed, m_autoShoot, m_autoIntake, m_groundIntake, m_outtake, m_subwoofer, m_rightUnderStage);
+  public final SwerveDrive m_swerve = new SwerveDrive(m_stowed, m_autoShoot, m_autoIntake, m_groundIntake, m_outtake, m_subwoofer, m_rightUnderStage);
 
   private SnapToAngle m_snap = new SnapToAngle(m_swerve);
   private AutoStraighten m_straighten = new AutoStraighten(m_swerve);
@@ -241,6 +241,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return m_autoChooser.getSelected();
+    
     // return new PivotFF(m_pivot);
     // return new TrapezoidalPivot(m_pivot, 0.16);
     // return new WristFF(m_wrist);

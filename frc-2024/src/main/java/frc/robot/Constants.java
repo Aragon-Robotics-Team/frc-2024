@@ -25,10 +25,10 @@ public final class Constants {
 
   public static class DriveConstants {
     public static final double kDriveGearRatio = 5.9028;
-    public static final double kDriveSensorToMechanismRatio = kDriveGearRatio / Units.inchesToMeters(4 * Math.PI);
+    public static final double kDriveSensorToMechanismRatio = kDriveGearRatio / Units.inchesToMeters(4 * 0.95 * Math.PI); //wheel diameter is 4; 0.95 here is to correct some error. There was a -5% measured error in real life. No Magic Numbers! 
     public static final double kTurnEncoderPositionToRadians = 2.0 * Math.PI;
     public static final double kTranslationalDeadbandMetersPerSecond = 0.001;
-    public static final double kMaxTranslationalMetersPerSecond = Units.feetToMeters(18.9);
+    public static final double kMaxTranslationalMetersPerSecond = Units.feetToMeters(18.9); //used to be 18.9
     // public static final double kMaxTranslationalMetersPerSecond = Units.feetToMeters(4.5);
 
     
@@ -87,7 +87,7 @@ public final class Constants {
     public static boolean kFrontLeftTurningReversed = true;
     public static boolean kFrontRightTurningReversed = true;
     public static boolean kBackLeftTurningReversed = true;
-    public static boolean kBackRightTurningReversed = false;
+    public static boolean kBackRightTurningReversed = false; //why is it not reversed?
 
     public static double kP_X = 0.75;
     public static double kI_X = 0;
@@ -116,7 +116,7 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kDeadBand = 0.05;
-    public static final double kAbsEncoderOffset = 0.8624; // subtractive.
+    public static final double kAbsEncoderOffset = 0.3954; // higher = more away from battery
 
     public static final double kCruiseVelocity = 0.3; // Rot/Sec
     public static final double kMaxAccel = 0.8; // Rot/Sec^2
@@ -145,7 +145,7 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kDeadBand = 0.05;
-    public static final double kEncoderOffset = 0.886434;
+    public static final double kEncoderOffset = 0.516434;
 
     public static final double kCruiseVelocity = 0.4; // RPS
     public static final double kMaxAccel = 0.8; // RPS^2 

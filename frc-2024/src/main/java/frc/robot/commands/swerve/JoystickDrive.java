@@ -48,11 +48,12 @@ public class JoystickDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     // Get joystick inputs.
     double xSpeed = m_xSpeed.get();
-    //xSpeed = 0.5; (testing)
+    //xSpeed = 0.25;
     double ySpeed = m_ySpeed.get();
-    //ySpeed = 0; (testing)
+    //ySpeed = 0.25;
     xSpeed *= Math.signum(xSpeed) * xSpeed;
     ySpeed *= Math.signum(ySpeed) * ySpeed;
     double turningSpeed = m_turningSpeed.get();
