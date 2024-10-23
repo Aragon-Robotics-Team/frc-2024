@@ -33,11 +33,13 @@ public class VisionTest extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.print("Yaw: ");
-    System.out.println(m_vision.getYaw());
-    System.out.print("Pitch: ");
-    System.out.println(m_vision.getPitch());
+    System.out.println("Yaw: " + m_vision.getYaw());
+    System.out.println("Pitch: " + m_vision.getPitch());
+    System.out.println("Area: " + m_vision.getArea());
 
+    SmartDashboard.putNumber("Yaw", m_vision.getYaw());
+    SmartDashboard.putNumber("Pitch: ", m_vision.getPitch());
+    SmartDashboard.putNumber("Area: ", m_vision.getArea());
     //System.out.println(m_vision.getArea());
     //System.out.print("bello world");
 
