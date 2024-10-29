@@ -193,22 +193,22 @@ public class SwerveDrive extends SubsystemBase {
   public double getFrontLeftRotation()
 
   {
-    return ((Math.toDegrees(((m_frontLeft.getRotation()).getRadians())) % 360 + 540)) % 360 - 180;
+    return m_frontLeft.getRotationActual();
   }
 
   public double getFrontRightRotation()
   {
-    return ((Math.toDegrees(((m_frontRight.getRotation()).getRadians())) % 360 + 540)) % 360 - 180;
+    return m_frontRight.getRotationActual();
   }
 
   public double getBackLeftRotation()
   {
-    return ((Math.toDegrees(((m_backLeft.getRotation()).getRadians())) % 360 + 720)) % 360 - 180;
+    return m_backLeft.getRotationActual();
   }
 
   public double getBackRightRotation()
   {
-    return ((Math.toDegrees(((m_backRight.getRotation()).getRadians())) % 360 + 540)) % 360 - 180;
+    return m_backRight.getRotationActual();
   }
 
   public double getFrontLeftRotationCommand()
@@ -230,7 +230,11 @@ public class SwerveDrive extends SubsystemBase {
   {
     return m_backRight.getRotationCommand();
   }
-
+  
+  public double getBackRightRotationPIDOutput()
+  {
+    return m_backLeft.getRotationPIDOutput();
+  }
 
 
   public void driveRobotRelative(ChassisSpeeds speeds) { 

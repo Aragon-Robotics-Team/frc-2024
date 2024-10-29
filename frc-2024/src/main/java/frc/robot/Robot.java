@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import java.io.File;
+
 import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -31,7 +34,7 @@ public class Robot extends LoggedRobot {
    * initialization code.
    */
 
-   DoubleLogEntry frontLeft;
+   DoubleLogEntry m_frontLeft;
    DoubleLogEntry frontRight;
    DoubleLogEntry backLeft;
    DoubleLogEntry backRight;
@@ -40,16 +43,22 @@ public class Robot extends LoggedRobot {
    DoubleLogEntry frontRightCommand;
    DoubleLogEntry backLeftCommand;
    DoubleLogEntry backRightCommand;
+  
+   DoubleLogEntry backLeftRotationPIDOutput;
    
 
   @Override
   public void robotInit() {
 
+
     DataLogManager.start();
+    
 
     DataLog log = DataLogManager.getLog();
 
-    frontLeft = new DoubleLogEntry(log, "/my/frontLeft");
+    
+
+    m_frontLeft = new DoubleLogEntry(log, "/my/frontLeft");
     frontRight = new DoubleLogEntry(log, "/my/frontRight");
     backLeft = new DoubleLogEntry(log, "/my/backLeft");
     backRight = new DoubleLogEntry(log, "/my/backRight");
@@ -58,6 +67,8 @@ public class Robot extends LoggedRobot {
     frontRightCommand = new DoubleLogEntry(log, "/my/frontRightCommand");
     backLeftCommand = new DoubleLogEntry(log, "/my/backLeftCommand");
     backRightCommand = new DoubleLogEntry(log, "/my/backRightCommand");
+
+    backLeftRotationPIDOutput = new DoubleLogEntry(log, "/my/backLeftRotationPIDOutput");
 
 
     
@@ -86,7 +97,8 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit(){}
+  
 
   @Override
   public void disabledPeriodic() {}
@@ -109,16 +121,18 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    frontLeft.append(m_robotContainer.m_swerve.getFrontLeftRotation());
+    m_frontLeft.append(m_robotContainer.m_swerve.getFrontLeftRotation());
     frontRight.append(m_robotContainer.m_swerve.getFrontRightRotation());
     backLeft.append(m_robotContainer.m_swerve.getBackLeftRotation());
     backRight.append(m_robotContainer.m_swerve.getBackRightRotation());
 
     frontLeftCommand.append(m_robotContainer.m_swerve.getFrontLeftRotationCommand());
     frontRightCommand.append(m_robotContainer.m_swerve.getFrontRightRotationCommand());
-    backLeftCommand.append(m_robotContainer.m_swerve.getBackLeftRotation());
+    backLeftCommand.append(m_robotContainer.m_swerve.getBackLeftRotationCommand());
     backRightCommand.append(m_robotContainer.m_swerve.getBackRightRotationCommand());
-    
+
+    backLeftRotationPIDOutput.append(m_robotContainer.m_swerve.getBackRightRotationPIDOutput());
+
   }
 
   @Override
@@ -161,4 +175,5 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+  
 }

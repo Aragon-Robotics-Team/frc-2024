@@ -123,6 +123,7 @@ public class SwerveModule extends SubsystemBase {
 
   double rotationCommand;
   double rotation;
+  double rotationPIDOutput;
 
   public void setDesiredState(SwerveModuleState state) {
     if (Math.abs(state.speedMetersPerSecond) < DriveConstants.kTranslationalDeadbandMetersPerSecond) {
@@ -140,16 +141,29 @@ public class SwerveModule extends SubsystemBase {
 
     m_driveMotor.set(ff + pid);
     m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians())); // THE ACTUAL AND COMMANDED VALUES ARE THE SAME DAMN THING
-    rotation = getRotation().getRadians();
+
+
+    rotation = ((Math.toDegrees(((getRotation()).getRadians())) % 360 + 540)) % 360 - 180;
     rotationCommand = ((Math.toDegrees(((state.angle).getRadians())) % 360 + 540)) % 360 - 180;
+    rotationPIDOutput = m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians());
+
     
     SmartDashboard.putString("Swerve_" + m_moduleId + "_state", state.toString());
   }
 
+  public double getRotationActual()
+  {
+    return rotation;
+  }
 
   public double getRotationCommand()
   {
     return rotationCommand;
+  }
+
+  public double getRotationPIDOutput()
+  {
+    return rotationPIDOutput;
   }
 
 
