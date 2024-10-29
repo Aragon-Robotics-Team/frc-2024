@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
+import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -14,6 +16,10 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -45,27 +51,15 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
 
-    DataLogManager.start();
+    Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
 
-    DataLog log = DataLogManager.getLog();
+//    if (isReal()) {
+//      Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+//      Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+//    }
 
-    frontLeft = new DoubleLogEntry(log, "/my/frontLeft");
-    frontRight = new DoubleLogEntry(log, "/my/frontRight");
-    backLeft = new DoubleLogEntry(log, "/my/backLeft");
-    backRight = new DoubleLogEntry(log, "/my/backRight");
-
-    frontLeftCommand = new DoubleLogEntry(log, "/my/frontLeftCommand");
-    frontRightCommand = new DoubleLogEntry(log, "/my/frontRightCommand");
-    backLeftCommand = new DoubleLogEntry(log, "/my/backLeftCommand");
-    backRightCommand = new DoubleLogEntry(log, "/my/backRightCommand");
-
-
-    
-    // CameraServer.startAutomaticCapture();
-
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
+    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
   }
 
   /**
