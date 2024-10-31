@@ -4,10 +4,9 @@
 
 package frc.robot;
 
-import java.io.File;
-
+import edu.wpi.first.wpilibj.PowerDistribution;
+import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -15,8 +14,17 @@ import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.SwerveDrive;
+
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import java.io.File;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -29,12 +37,13 @@ public class Robot extends LoggedRobot {
   private Command m_teleopCommand;
 
   private RobotContainer m_robotContainer;
+  private SwerveDrive m_swerve;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
 
-   DoubleLogEntry m_frontLeft;
+   DoubleLogEntry frontLeft;
    DoubleLogEntry frontRight;
    DoubleLogEntry backLeft;
    DoubleLogEntry backRight;
@@ -43,40 +52,32 @@ public class Robot extends LoggedRobot {
    DoubleLogEntry frontRightCommand;
    DoubleLogEntry backLeftCommand;
    DoubleLogEntry backRightCommand;
-  
-   DoubleLogEntry backLeftRotationPIDOutput;
+
+   String log_directory = "/home/lvuser/logs";
    
 
   @Override
   public void robotInit() {
 
+    var directory = new File(log_directory);
 
-    DataLogManager.start();
+    if (!directory.exists())
+    {
+      directory.mkdir();
+    }
+
+    Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
     
 
-    DataLog log = DataLogManager.getLog();
 
-    
+    Logger.addDataReceiver(new WPILOGWriter(log_directory)); // Log to a USB stick ("/U/logs")
+    Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
 
-    m_frontLeft = new DoubleLogEntry(log, "/my/frontLeft");
-    frontRight = new DoubleLogEntry(log, "/my/frontRight");
-    backLeft = new DoubleLogEntry(log, "/my/backLeft");
-    backRight = new DoubleLogEntry(log, "/my/backRight");
+    // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
+    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
 
-    frontLeftCommand = new DoubleLogEntry(log, "/my/frontLeftCommand");
-    frontRightCommand = new DoubleLogEntry(log, "/my/frontRightCommand");
-    backLeftCommand = new DoubleLogEntry(log, "/my/backLeftCommand");
-    backRightCommand = new DoubleLogEntry(log, "/my/backRightCommand");
-
-    backLeftRotationPIDOutput = new DoubleLogEntry(log, "/my/backLeftRotationPIDOutput");
-
-
-    
-    // CameraServer.startAutomaticCapture();
-
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_swerve = m_robotContainer.m_swerve;
   }
 
   /**
@@ -97,8 +98,7 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit(){}
-  
+  public void disabledInit() {}
 
   @Override
   public void disabledPeriodic() {}
@@ -118,21 +118,17 @@ public class Robot extends LoggedRobot {
     
   }
 
+  
+
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    m_frontLeft.append(m_robotContainer.m_swerve.getFrontLeftRotation());
-    frontRight.append(m_robotContainer.m_swerve.getFrontRightRotation());
-    backLeft.append(m_robotContainer.m_swerve.getBackLeftRotation());
-    backRight.append(m_robotContainer.m_swerve.getBackRightRotation());
 
-    frontLeftCommand.append(m_robotContainer.m_swerve.getFrontLeftRotationCommand());
-    frontRightCommand.append(m_robotContainer.m_swerve.getFrontRightRotationCommand());
-    backLeftCommand.append(m_robotContainer.m_swerve.getBackLeftRotationCommand());
-    backRightCommand.append(m_robotContainer.m_swerve.getBackRightRotationCommand());
-
-    backLeftRotationPIDOutput.append(m_robotContainer.m_swerve.getBackRightRotationPIDOutput());
-
+    Logger.recordOutput("steeringBackLeft", m_swerve.getBackLeftRotation());
+    Logger.recordOutput("steeringBackLeftCommand", m_swerve.getBackLeftRotationCommand());
+    Logger.recordOutput("driveBackLeft", m_swerve.getBackLeftVelocityActual());
+    Logger.recordOutput("driveBackLeftCommand", m_swerve.getBackLeftVelocityCommand());
+    
   }
 
   @Override
@@ -175,5 +171,4 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
-  
 }

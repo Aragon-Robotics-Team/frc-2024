@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -121,9 +122,13 @@ public class SwerveModule extends SubsystemBase {
     return new SwerveModulePosition(getDrivePosition(), getRotation());
   }
 
-  double rotationCommand;
+  
   double rotation;
+  double rotationCommand;
   double rotationPIDOutput;
+
+  double velocity;
+  double velocityCommand;
 
   public void setDesiredState(SwerveModuleState state) {
     if (Math.abs(state.speedMetersPerSecond) < DriveConstants.kTranslationalDeadbandMetersPerSecond) {
@@ -138,6 +143,11 @@ public class SwerveModule extends SubsystemBase {
 
     double ff = state.speedMetersPerSecond / DriveConstants.kMaxTranslationalMetersPerSecond;
     double pid = m_drivingPIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
+
+    velocity = getDriveVelocity();
+    velocityCommand = state.speedMetersPerSecond;
+
+    
 
     m_driveMotor.set(ff + pid);
     m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians())); // THE ACTUAL AND COMMANDED VALUES ARE THE SAME DAMN THING
@@ -166,6 +176,15 @@ public class SwerveModule extends SubsystemBase {
     return rotationPIDOutput;
   }
 
+  public double getVelocityActual()
+  {
+    return velocity;
+  }
+
+  public double getVelocityCommand()
+  {
+    return velocityCommand;
+  }
 
   
 

@@ -237,6 +237,47 @@ public class SwerveDrive extends SubsystemBase {
   }
 
 
+  public double getFrontLeftVelocityActual()
+  {
+    return m_frontLeft.getRotationActual();
+  }
+
+  public double getFrontLeftVelocityCommand()
+  {
+    return m_frontLeft.getRotationCommand();
+  }
+
+  public double getFrontRightVelocityActual()
+  {
+    return m_frontRight.getRotationActual();
+  }
+
+  public double getFrontRightVelocityCommand()
+  {
+    return m_frontRight.getRotationCommand();
+  }
+
+  public double getBackLeftVelocityActual()
+  {
+    return m_backLeft.velocity;
+  }
+
+  public double getBackLeftVelocityCommand()
+  {
+    return m_backLeft.velocityCommand;
+  }
+
+  public double getBackRightVelocityActual()
+  {
+    return m_backRight.velocity;
+  }
+
+  public double getBackRightVelocityCommand()
+  {
+    return m_backRight.velocityCommand;
+  }
+
+
   public void driveRobotRelative(ChassisSpeeds speeds) { 
     SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     setModuleStates(states);
