@@ -219,5 +219,7 @@ public final class Constants {
     public static final double kAmpPivot = 0.054292979797325;
     public static final double kAmpElevator = -2.077077501926937;
     public static final double kAmpWrist = -0.272981734663693 ;
+    
+    public static final double kStageWrist = -0.197;
   }
 }

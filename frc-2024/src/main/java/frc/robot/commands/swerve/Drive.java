@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.Vision;
 
 public class Drive extends Command {
   private static final class Config {
@@ -31,6 +32,7 @@ public class Drive extends Command {
   //Drivetrain with Snap and Joystick integrated together
 
   private final SwerveDrive m_swerve;
+  private final Vision m_vision;
   
   private double m_xSpeed, m_ySpeed, m_turningSpeed;
   private final Joystick m_driverJoystick;
@@ -44,10 +46,10 @@ public class Drive extends Command {
   private DataLog m_log = DataLogManager.getLog();
   private DoubleLogEntry m_driveLog;
 
-  public Drive(SwerveDrive swerve, Joystick driverJoystick, JoystickButton visionAimButton, JoystickButton snapToZeroButton) {
+  public Drive(SwerveDrive swerve, Joystick driverJoystick, Vision vision, JoystickButton visionAimButton, JoystickButton snapToZeroButton) {
     m_swerve = swerve;
-
     m_driverJoystick = driverJoystick;
+    m_vision = vision;
 
     m_xLimiter = new SlewRateLimiter(DriveConstants.kTeleopMaxAccelMetersPerSecondSquared);
     m_yLimiter = new SlewRateLimiter(DriveConstants.kTeleopMaxAccelMetersPerSecondSquared);
@@ -77,17 +79,21 @@ public class Drive extends Command {
     m_driveLog.append(m_ySpeed);
     
     if (m_visionAimButton.getAsBoolean()){
-      m_currentAngle = SmartDashboard.getNumber("angle", 0);
+      System.out.println("Vision Aim button pressed - Turning to Tag");
+      m_currentAngle = m_vision.getYaw();
     // m_turningSpeed = m_pid.calculate(m_currentAngle, m_currentAngle + m_targetAngle);
-      m_turningSpeed = m_pid.calculate(m_currentAngle, 0);
+      m_turningSpeed = -m_pid.calculate(m_currentAngle, 0);
+      SmartDashboard.putNumber("Turning speed", m_turningSpeed);
 
     } else if (m_snapToZeroButton.getAsBoolean()){
+      System.out.println("Snap to zero button pressed - snapping to zero");
       m_targetAngle = 0;
       SmartDashboard.putNumber("Goal angle degrees", m_targetAngle);
       m_currentAngle = m_swerve.getAngle().getDegrees();
 
       m_turningSpeed = m_pid.calculate(m_currentAngle, m_initAngle + m_targetAngle);
     } else {
+      System.out.println("No button pressed - joystick turn");
       m_turningSpeed = -m_driverJoystick.getRawAxis(DriveConstants.kJoystickRotAxis);
     }
 
