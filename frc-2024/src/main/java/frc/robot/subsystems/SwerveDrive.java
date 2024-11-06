@@ -196,44 +196,23 @@ public class SwerveDrive extends SubsystemBase {
     return m_frontLeft.getRotationActual();
   }
 
-  public double getFrontRightRotation()
-  {
-    return m_frontRight.getRotationActual();
-  }
-
-  public double getBackLeftRotation()
-  {
-    return m_backLeft.getRotationActual();
-  }
-
-  public double getBackRightRotation()
-  {
-    return m_backRight.getRotationActual();
-  }
-
-  public double getFrontLeftRotationCommand()
-  {
-    return m_frontLeft.getRotationCommand();
-  }
-
-  public double getFrontRightRotationCommand()
-  {
-    return m_frontRight.getRotationCommand();
-  }
-
-  public double getBackLeftRotationCommand()
-  {
-    return m_backLeft.getRotationCommand();
-  }
-
-  public double getBackRightRotationCommand()
-  {
-    return m_backRight.getRotationCommand();
-  }
+  SwerveModule[] m_modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
+  public String[] m_moduleNames = {"frontLeft", "frontRight", "backLeft", "backRight"};
   
-  public double getBackRightRotationPIDOutput()
+  public interface I
   {
-    return m_backLeft.getRotationPIDOutput();
+    public double get(SwerveModule module);
+
+  }
+  public double[] getFromAllSwerveModules(I property)
+  {
+    double[] properties = new double[m_modules.length];
+    for(int i = 0; i < properties.length; i++)
+    {
+      properties[i] = property.get(m_modules[i]);
+    }
+    return properties;
+
   }
 
 

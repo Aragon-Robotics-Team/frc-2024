@@ -118,11 +118,30 @@ public class Robot extends LoggedRobot {
     
   }
 
+
+  
+
+  public void logAllSwerveModules(SwerveDrive.I property, String propertyName)
+  {
+    double[] values = m_swerve.getFromAllSwerveModules(property);
+    for(int i = 0; i < values.length; i++)
+    {
+      Logger.recordOutput(m_swerve.m_moduleNames[i] + propertyName, values[i]);
+    }
+  }
+
+  
+
+
   
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    logAllSwerveModules(SwerveModule::getVelocityActual, "Velocity");
+    logAllSwerveModules(SwerveModule::getVelocityCommand, "VelocityCommand");
+    logAllSwerveModules(SwerveModule::getRotationActual, "Rotation");
+    logAllSwerveModules(SwerveModule::getRotationCommand, "RotationCommand");
 
     Logger.recordOutput("steeringBackLeft", m_swerve.getBackLeftRotation());
     Logger.recordOutput("steeringBackLeftCommand", m_swerve.getBackLeftRotationCommand());
