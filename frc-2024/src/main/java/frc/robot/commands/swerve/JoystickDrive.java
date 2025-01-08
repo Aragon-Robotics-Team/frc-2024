@@ -53,7 +53,7 @@ public class JoystickDrive extends Command {
     double xSpeed = m_xSpeed.get();
     //xSpeed = 0.25;
     double ySpeed = m_ySpeed.get();
-    //ySpeed = 0.25;
+    //ySpeed = 0;
     xSpeed *= Math.signum(xSpeed) * xSpeed;
     ySpeed *= Math.signum(ySpeed) * ySpeed;
     double turningSpeed = m_turningSpeed.get();

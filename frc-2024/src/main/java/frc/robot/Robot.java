@@ -138,13 +138,13 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    logAllSwerveModules(SwerveModule::getVelocityActual, "Velocity");
-    logAllSwerveModules(SwerveModule::getVelocityCommand, "VelocityCommand");
-    logAllSwerveModules(SwerveModule::getRotationActual, "Rotation");
-    logAllSwerveModules(SwerveModule::getRotationCommand, "RotationCommand");
+    // logAllSwerveModules(SwerveModule::getVelocityActual, "Velocity");
+    // logAllSwerveModules(SwerveModule::getVelocityCommand, "VelocityCommand");
+    // logAllSwerveModules(SwerveModule::getRotationActual, "Rotation");
+    // logAllSwerveModules(SwerveModule::getRotationCommand, "RotationCommand");
 
-    Logger.recordOutput("steeringBackLeft", m_swerve.getBackLeftRotation());
-    Logger.recordOutput("steeringBackLeftCommand", m_swerve.getBackLeftRotationCommand());
+    // Logger.recordOutput("steeringBackLeft", m_swerve.getBackLeftRotation());
+    // Logger.recordOutput("steeringBackLeftCommand", m_swerve.getBackLeftRotationCommand());
     Logger.recordOutput("driveBackLeft", m_swerve.getBackLeftVelocityActual());
     Logger.recordOutput("driveBackLeftCommand", m_swerve.getBackLeftVelocityCommand());
     

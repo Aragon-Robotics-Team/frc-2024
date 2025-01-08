@@ -18,7 +18,7 @@
     "1+0 Subwoofer",
     "1+1 Subwoofer"
   ],
-  "defaultMaxVel": 4.5,
+  "defaultMaxVel": 1.0,
   "defaultMaxAccel": 2.5,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,

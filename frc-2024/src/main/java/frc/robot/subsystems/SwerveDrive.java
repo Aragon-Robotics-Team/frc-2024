@@ -339,14 +339,12 @@ public class SwerveDrive extends SubsystemBase {
         m_backLeft.getPosition(), m_backRight.getPosition()
       });
 
-    SmartDashboard.putNumber("Angle", getAngle().getDegrees());
+    //SmartDashboard.putNumber("Angle", getAngle().getDegrees());
     
     m_totalCurrent = m_frontLeft.getDriveCurrent() + m_frontLeft.getTurnCurrent() + m_frontRight.getDriveCurrent() + m_frontRight.getTurnCurrent() + m_backLeft.getDriveCurrent() + m_backLeft.getTurnCurrent() + m_backRight.getDriveCurrent() + m_backRight.getTurnCurrent();
-    SmartDashboard.putNumber("Total Current", m_totalCurrent);
+    //SmartDashboard.putNumber("Total Current", m_totalCurrent);
 
     m_field.setRobotPose(m_odo.getPoseMeters());
-    SmartDashboard.putNumber("Swerve/Odo/Pose X", m_odo.getPoseMeters().getX());
-    SmartDashboard.putNumber("Swerve/Odo/Pose Y", m_odo.getPoseMeters().getY());
     SmartDashboard.putData("Swerve/Odo/Field", m_field);
     
     m_xStartPose = SmartDashboard.getNumber("Swerve/Odo/X", 2);
@@ -355,9 +353,9 @@ public class SwerveDrive extends SubsystemBase {
     SmartDashboard.putNumber("Swerve/Odo/Y", m_yStartPose);
 
     SmartDashboard.putNumber("Swerve/Odo/FrontLeftRotation", getFrontLeftRotation());
-    SmartDashboard.putNumber("Swerve/Odo/FrontRightRotation", getFrontRightRotation());
-    SmartDashboard.putNumber("Swerve/Odo/BackLeftRotation", getBackLeftRotation());
-    SmartDashboard.putNumber("Swerve/Odo/BackRightRotation", getBackRightRotation());
+    // SmartDashboard.putNumber("Swerve/Odo/FrontRightRotation", getFrontRightRotation());
+    // SmartDashboard.putNumber("Swerve/Odo/BackLeftRotation", getBackLeftRotation());
+    // SmartDashboard.putNumber("Swerve/Odo/BackRightRotation", getBackRightRotation());
 
     
     // // System.out.println("Chassis speeds:" + this.getChassisSpeeds());

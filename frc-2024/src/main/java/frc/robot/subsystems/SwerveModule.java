@@ -150,7 +150,7 @@ public class SwerveModule extends SubsystemBase {
     
 
     m_driveMotor.set(ff + pid);
-    m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians())); // THE ACTUAL AND COMMANDED VALUES ARE THE SAME DAMN THING
+    m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians()));
 
 
     rotation = ((Math.toDegrees(((getRotation()).getRadians())) % 360 + 540)) % 360 - 180;
@@ -210,8 +210,8 @@ public class SwerveModule extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Swerve/Angle/Measured/Module_" + m_moduleId, getTurningPosition());
+    SmartDashboard.putNumber("turn" + m_moduleId, getTurningPosition());
     SmartDashboard.putNumber("Swerve/Speed/Measured/Module_" + m_moduleId, getDriveVelocity());
     SmartDashboard.putNumber("Swerve/Distance/Module_" + m_moduleId, getDrivePosition());
   }
-}
+} 
