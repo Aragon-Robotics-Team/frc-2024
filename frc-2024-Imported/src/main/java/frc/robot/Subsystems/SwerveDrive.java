@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
+
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,12 +21,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.Constants.DriveConstants;
 
 public class SwerveDrive extends SubsystemBase {
@@ -69,7 +73,7 @@ public class SwerveDrive extends SubsystemBase {
 
   private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeft.getTranslation(), m_frontRight.getTranslation(), m_backLeft.getTranslation(), m_backRight.getTranslation());
 
-  private final AHRS m_imu = new AHRS();
+  private final AHRS m_imu = new AHRS(NavXComType.kI2C); // im pretty sure this is i2c based on docs
 
   private double m_totalCurrent;
 
@@ -185,20 +189,25 @@ public class SwerveDrive extends SubsystemBase {
       }, new Pose2d(m_xStartPose, m_yStartPose, getAngle()));
   }
 
+  
   public SwerveDrive(){
-     AutoBuilder.configureHolonomic(
+
+     // wtf is this indentation
+    RobotConfig m_robotConfig = DriveConstants.driveConfig;
+    
+
+     AutoBuilder.configure(
                 this::getPoseMeters, // Robot pose supplier
                 this::resetOdo, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                        new PIDConstants(this.getXController().getP(), this.getXController().getI(), this.getXController().getD()), // Translation PID constants
-                        new PIDConstants(this.getThetaController().getP(), this.getThetaController().getI(), this.getThetaController().getD()), // Translation PID constants
-                         // Rotation PID constants
-                        DriveConstants.kMaxTranslationalMetersPerSecond, // Max module speed, in m/s
-                        Units.inchesToMeters(14.0), // Drive base radius in meters. Distance from robot center to furthest module.
-                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                
+                new PPHolonomicDriveController(
+                  new PIDConstants(this.getXController().getP(), this.getXController().getI(), this.getXController().getD()), 
+                  new PIDConstants(this.getThetaController().getP(), this.getThetaController().getI(), this.getThetaController().getD())
                 ),
+
+                m_robotConfig,
                 () -> {
                     // Boolean supplier that controls when the path will be mirrored for the red alliance
                     // This will flip the path being followed to the red side of the field.
@@ -214,6 +223,7 @@ public class SwerveDrive extends SubsystemBase {
      );
 
      SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
+
   }
 
   public void stop() {

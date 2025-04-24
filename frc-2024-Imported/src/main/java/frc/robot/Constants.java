@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.RobotConfig;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -38,6 +42,15 @@ public final class Constants {
     public static final double kIDriving = 0.0;
     public static final double kDDriving = 0.0;
     public static final double kWheelBase = Units.inchesToMeters(28);
+
+
+    private static final Translation2d[] moduleOffsets = new Translation2d[] {
+      new Translation2d(0.3556 - 0.065, 0.3556 - 0.068),
+      new Translation2d(0.3556 - 0.066, -0.3556 + 0.066),
+      new Translation2d(0.3556 - 0.645, -0.3556 + 0.644),
+      new Translation2d(0.3556 - 0.644, -0.3556 + 0.063)
+    };
+
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
       new Translation2d(0.3556 - 0.065, 0.3556 - 0.068),
       new Translation2d(0.3556 - 0.066, -0.3556 + 0.066),
@@ -98,6 +111,20 @@ public final class Constants {
     public static double kI_Theta = 0;
     public static double kD_Theta = 0;
 
+
+    private static double kRobotMass = 0;
+    private static double kRobotMOI = 0;
+
+
+    // pretty sure we're using a neo drive base
+    // ALL CONSTANTS ARE FROM PATH PLANNER
+    // lowkey those constants in there don't matter then.
+    public static RobotConfig driveConfig = new RobotConfig(
+      kRobotMass, 
+      kRobotMOI, 
+      new ModuleConfig(0.048, 5.450, 1.2, DCMotor.getNEO(2).withReduction(5.143), 60.0, 2), 
+      moduleOffsets
+    );
   }
 
   public final static class PivotConstants {

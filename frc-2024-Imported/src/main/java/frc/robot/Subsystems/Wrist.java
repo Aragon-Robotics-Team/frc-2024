@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WristConstants;
@@ -26,7 +25,8 @@ public class Wrist extends SubsystemBase {
   }
 
   public double getEncoderPosition(){
-    return m_encoder.getAbsolutePosition() - WristConstants.kEncoderOffset;
+    // a simple .get() should work
+    return m_encoder.get() - WristConstants.kEncoderOffset;
   }
 
   public boolean ifForwardTriggered(){

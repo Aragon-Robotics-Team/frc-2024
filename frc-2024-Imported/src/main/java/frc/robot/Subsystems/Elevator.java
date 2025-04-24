@@ -4,9 +4,12 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,8 +18,10 @@ import frc.robot.Constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
 
-  private CANSparkMax m_neo1 = new CANSparkMax(ElevatorConstants.kMotorID1, MotorType.kBrushless);
-  private CANSparkMax m_neo2 = new CANSparkMax(ElevatorConstants.kMotorID2, MotorType.kBrushless);
+  private SparkMax m_neo1 = new SparkMax(ElevatorConstants.kMotorID1, MotorType.kBrushless);
+  private SparkMax m_neo2 = new SparkMax(ElevatorConstants.kMotorID2, MotorType.kBrushless);
+
+  private SparkMaxConfig m_sparkConfig;
 
   private DutyCycleEncoder m_encoder = new DutyCycleEncoder(0);
 
@@ -25,9 +30,13 @@ public class Elevator extends SubsystemBase {
 
   /** Creates a new Elevator. */
   public Elevator() {
-    m_neo1.getEncoder().setPosition(0);
-    m_neo1.setIdleMode(IdleMode.kBrake);
-    m_neo2.setIdleMode(IdleMode.kBrake);
+    m_sparkConfig = new SparkMaxConfig();
+    m_sparkConfig.idleMode(IdleMode.kBrake);
+
+    m_neo1.configure(m_sparkConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_neo2.configure(m_sparkConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    
+    m_neo1.getEncoder().setPosition(0); // only use neo 1 encoder
   }
 
   public double getEncoderPosition(){

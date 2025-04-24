@@ -4,9 +4,12 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -22,8 +25,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class SwerveModule extends SubsystemBase {
-  private final CANSparkMax m_driveMotor;
-  private final CANSparkMax m_turnMotor;
+  private final SparkMax m_driveMotor;
+  private final SparkMax m_turnMotor;
+  private final SparkMaxConfig config;
 
   private final RelativeEncoder m_driveEncoder;
   private final DutyCycleEncoder m_absoluteEncoder;
@@ -40,16 +44,13 @@ public class SwerveModule extends SubsystemBase {
   public SwerveModule(int driveId, int turnId, int absoluteEncoderPort, double absoluteEncoderOffset,
       boolean driveReversed, boolean turningReversed, int moduleId) {
     // Initialize motors and encoders.
-    m_driveMotor = new CANSparkMax(driveId, MotorType.kBrushless);
-    m_turnMotor = new CANSparkMax(turnId, MotorType.kBrushless);
+    m_driveMotor = new SparkMax(driveId, MotorType.kBrushless);
+    m_turnMotor = new SparkMax(turnId, MotorType.kBrushless);
 
     m_driveEncoder = m_driveMotor.getEncoder();
     m_absoluteEncoder = new DutyCycleEncoder(new DigitalInput(absoluteEncoderPort));
 
-    // Set conversion coefficients.
-    m_driveEncoder.setVelocityConversionFactor(DriveConstants.kDriveEncoderVelocityToMetersPerSec);
-    m_driveEncoder.setPositionConversionFactor(DriveConstants.kDriveEncoderPositionToMeters);
-    m_absoluteEncoder.setDistancePerRotation(DriveConstants.kTurnEncoderPositionToRadians);
+    // conversion coefficiencts now set directly in each method
 
     // Initialize Everything else.
     m_absoluteEncoderOffset = absoluteEncoderOffset;
@@ -60,10 +61,15 @@ public class SwerveModule extends SubsystemBase {
         DriveConstants.kDDriving);
     m_moduleId = moduleId;
 
-    m_turnMotor.setIdleMode(IdleMode.kBrake);
-    m_driveMotor.setIdleMode(IdleMode.kBrake);
-    m_driveMotor.setInverted(driveReversed);
-    m_turnMotor.setInverted(turningReversed);
+    config = new SparkMaxConfig();
+    config.idleMode(IdleMode.kBrake);
+    config.inverted(driveReversed);
+    
+    m_driveMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    config.inverted(turningReversed);
+    m_turnMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
 
     resetEncoders();
 
@@ -71,20 +77,21 @@ public class SwerveModule extends SubsystemBase {
 
   }
 
-  public double getDrivePosition() {
-    return m_driveEncoder.getPosition();
-  }
-
+  
   public double getTurningPosition() {
-    return m_absoluteEncoder.getDistance() - m_absoluteEncoderOffset;
+    return m_absoluteEncoder.get()*DriveConstants.kTurnEncoderPositionToRadians - m_absoluteEncoderOffset;
   }
 
   public Rotation2d getRotation() {
     return new Rotation2d(getTurningPosition());
   }
 
+  public double getDrivePosition() {
+    return m_driveEncoder.getPosition()*DriveConstants.kDriveEncoderPositionToMeters;
+  }
+
   public double getDriveVelocity() {
-    return m_driveEncoder.getVelocity();
+    return m_driveEncoder.getVelocity()*DriveConstants.kDriveEncoderVelocityToMetersPerSec;
   }
 
   public void resetEncoders() {
@@ -105,7 +112,9 @@ public class SwerveModule extends SubsystemBase {
       return;
     }
 
+    // deprecated later, idc to change it for now
     state = SwerveModuleState.optimize(state, getState().angle);
+    
     SmartDashboard.putNumber("Swerve/Speed/Commanded/Module_" + m_moduleId, state.speedMetersPerSecond);
     SmartDashboard.putNumber("Swerve/Commanded/Angle_" + m_moduleId, state.angle.getRadians());
     SmartDashboard.putNumber("Swerve/Angle/Commanded/Module_" + m_moduleId, state.angle.getRadians());
