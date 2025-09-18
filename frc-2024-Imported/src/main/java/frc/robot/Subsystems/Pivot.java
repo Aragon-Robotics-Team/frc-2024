@@ -24,7 +24,7 @@ public class Pivot extends SubsystemBase {
   private MotorOutputConfigs clockwiseMotorConfig;
   private MotorOutputConfigs ccwMotorConfig;
 
-  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(2);
+  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(17);
 
   private LimitSwitch m_forward = new LimitSwitch(9);
   private LimitSwitch m_backward = new LimitSwitch(7);
