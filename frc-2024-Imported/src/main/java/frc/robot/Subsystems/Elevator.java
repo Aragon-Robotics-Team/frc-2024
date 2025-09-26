@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.subsystems.LimitSwitch;
 
 public class Elevator extends SubsystemBase {
 
@@ -23,10 +24,10 @@ public class Elevator extends SubsystemBase {
 
   private SparkMaxConfig m_sparkConfig;
 
-  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(0);
+  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(ElevatorConstants.kEncoderID);
 
-  private LimitSwitch m_top = new LimitSwitch(1);
-  private LimitSwitch m_bottom = new LimitSwitch(8);
+  private LimitSwitch m_top = new LimitSwitch(ElevatorConstants.kTopSwitchID);
+  private LimitSwitch m_bottom = new LimitSwitch(ElevatorConstants.kBottomSwitchID);
 
   /** Creates a new Elevator. */
   public Elevator() {
