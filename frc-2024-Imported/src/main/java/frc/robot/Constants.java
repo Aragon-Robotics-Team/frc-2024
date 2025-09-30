@@ -58,11 +58,7 @@ public final class Constants {
       new Translation2d(0.3556 - 0.644, -0.3556 + 0.063)
     );
     // TODO: gather all of these constants.
-<<<<<<< HEAD
-    public static int kFrontLeftDriveId = 2;
-=======
     public static int kFrontLeftDriveId = 26;
->>>>>>> parent of 7ec818f (Revert "9/25 changes")
     public static int kFrontLeftTurnId = 1;
     public static int kFrontLeftAbsoluteEncoderPort = 9;
     public static double kFrontLeftAbsoluteEncoderOffset = -0.529990463821544 - (Math.PI / 2.0);
