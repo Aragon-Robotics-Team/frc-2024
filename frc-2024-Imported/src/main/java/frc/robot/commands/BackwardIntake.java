@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-import frc.robot.subsystems.Pivot;
+
 import frc.robot.commands.pivot.PIDBack;
 import frc.robot.commands.pivot.PIDFront;
-
+import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Wrist;
 import frc.robot.commands.wrist.PIDBackward;
 import frc.robot.commands.wrist.PIDForward;

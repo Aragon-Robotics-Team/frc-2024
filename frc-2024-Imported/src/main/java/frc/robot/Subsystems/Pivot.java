@@ -25,7 +25,11 @@ public class Pivot extends SubsystemBase {
   private MotorOutputConfigs clockwiseMotorConfig;
   private MotorOutputConfigs ccwMotorConfig;
 
+<<<<<<< HEAD
+  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(2);
+=======
   private DutyCycleEncoder m_encoder = new DutyCycleEncoder(PivotConstants.kEncoderID);
+>>>>>>> parent of 7ec818f (Revert "9/25 changes")
 
   private LimitSwitch m_forward = new LimitSwitch(PivotConstants.kForwardSwitchID);
   private LimitSwitch m_backward = new LimitSwitch(PivotConstants.kBackwardSwitchID);
