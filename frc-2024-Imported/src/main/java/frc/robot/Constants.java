@@ -58,11 +58,12 @@ public final class Constants {
       new Translation2d(0.3556 - 0.645, -0.3556 + 0.644),
       new Translation2d(0.3556 - 0.644, -0.3556 + 0.063)
     );
-    // TODO: gather all of these constants.
+
     public static int kFrontLeftDriveId = 26;
     public static int kFrontLeftTurnId = 1;
     public static int kFrontLeftAbsoluteEncoderPort = 9;
     public static double kFrontLeftAbsoluteEncoderOffset = -0.629990463821544 + (Math.PI);
+
     public static boolean kFrontLeftDriveReversed = false;
 
     public static int kFrontRightDriveId = 4;
@@ -80,6 +81,7 @@ public final class Constants {
     public static int kBackRightDriveId = 6;
     public static int kBackRightTurnId = 5;//5 
     public static int kBackRightAbsoluteEncoderPort = 6;
+
     public static double kBackRightAbsoluteEncoderOffset = -0.456511594330128 - (Math.PI / 2.0);
     public static boolean kBackRightDriveReversed = true;
 
@@ -133,14 +135,14 @@ public final class Constants {
     public static final int kMotorID2 = 2;
     public static final int kMotorID3 = 3;
     public static final int kMotorID4 = 4;
+    public static final int kEncoderID = 3;
+    public static final int kForwardSwitchID = 4;
+    public static final int kBackwardSwitchID = 1;
     public static final int kGearRatio = 200;
     public static final double kP = 0.5;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kDeadBand = 0.05;
-    public static final int kEncoderID = 3;
-    public static final int kForwardSwitchID = 4;
-    public static final int kBackwardSwitchID = 1;
     public static final double kPivotEncoderOffset =0;
   }
 
@@ -151,6 +153,7 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kDeadBand = 0.05;
+
     public static final double kEncoderOffset = 0.886434 - (0.42);
     public static final int kEncoderID = 0;
     public static final int kForwardSwitchID = 12;
@@ -160,13 +163,14 @@ public final class Constants {
   public static final class ElevatorConstants{
     public static final int kMotorID1 = 12;
     public static final int kMotorID2= 13;
+
+    public static final int kEncoderID = 2;
+    public static final int kTopSwitchID = 13;
+    public static final int kBottomSwitchID = 10;
     public static final double RotationsPerInch = 0.00000001;
     public static final double kP = 0.5;
     public static final double kI = 0;
     public static final double kD = 0;
-    public static final int kEncoderID = 2;
-    public static final int kTopSwitchID = 13;
-    public static final int kBottomSwitchID = 10;
 
 
   public final static class Wrist {

@@ -79,7 +79,8 @@ public class SwerveModule extends SubsystemBase {
 
   
   public double getTurningPosition() {
-    return m_absoluteEncoder.get()*DriveConstants.kTurnEncoderPositionToRadians - m_absoluteEncoderOffset;
+    //return m_absoluteEncoder.get()*DriveConstants.kTurnEncoderiositionToRadians - m_absoluteEncoderOffset;
+    return m_absoluteEncoder.get();
   }
 
   public Rotation2d getRotation() {
@@ -113,7 +114,7 @@ public class SwerveModule extends SubsystemBase {
     }
 
     // deprecated later, idc to change it for now
-    state = SwerveModuleState.optimize(state, getState().angle);
+    //state = SwerveModuleState.optimize(state, getState().angle);
     
     SmartDashboard.putNumber("Swerve/Speed/Commanded/Module_" + m_moduleId, state.speedMetersPerSecond);
     SmartDashboard.putNumber("Swerve/Commanded/Angle_" + m_moduleId, state.angle.getRadians());

@@ -236,7 +236,10 @@ public class SwerveDrive extends SubsystemBase {
         m_frontLeft.getPosition(), m_frontRight.getPosition(),
         m_backLeft.getPosition(), m_backRight.getPosition()
       });
-
+    SmartDashboard.putNumber("fl steer", m_backRight.getTurningPosition());
+    SmartDashboard.putNumber("fr steer", m_backRight.getTurningPosition());
+    SmartDashboard.putNumber("bl steer", m_backRight.getTurningPosition());
+    SmartDashboard.putNumber("backright steer", m_backRight.getTurningPosition());
     SmartDashboard.putNumber("Angle", getAngle().getDegrees());
     
     m_totalCurrent = m_frontLeft.getDriveCurrent() + m_frontLeft.getTurnCurrent() + m_frontRight.getDriveCurrent() + m_frontRight.getTurnCurrent() + m_backLeft.getDriveCurrent() + m_backLeft.getTurnCurrent() + m_backRight.getDriveCurrent() + m_backRight.getTurnCurrent();

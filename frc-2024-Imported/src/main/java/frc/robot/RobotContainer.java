@@ -64,6 +64,7 @@ public class RobotContainer {
   private final Joystick m_driverJoystick = new Joystick(DriveConstants.kDriveJoystickId);
   private final Joystick m_operatorJoystick = new Joystick(DriveConstants.kOperatorJoystickId);
 
+
   private final JoystickDrive m_drive = new JoystickDrive(m_swerve, 
     () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickXAxis),
     () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickYxis),
@@ -73,8 +74,8 @@ public class RobotContainer {
   // private SnapToAngle m_snap = new SnapToAngle(m_swerve);
   // private AutoStraighten m_straighten = new AutoStraighten(m_swerve);
 
-  // private JoystickButton m_snapButton = new JoystickButton(m_driverJoystick, Config.kSnapButtonID); 
-  // private JoystickButton m_straightenButton = new JoystickButton(m_driverJoystick, Config.kStraightenButtonID);
+  private JoystickButton m_snapButton = new JoystickButton(m_driverJoystick, Config.kSnapButtonID); 
+  private JoystickButton m_straightenButton = new JoystickButton(m_driverJoystick, Config.kStraightenButtonID);
   // The robot's subsystems and commands are defined here...
   private Pivot m_pivot = new Pivot();
   private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_operatorJoystick);
