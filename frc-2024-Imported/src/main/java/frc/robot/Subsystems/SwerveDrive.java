@@ -71,7 +71,6 @@ public class SwerveDrive extends SubsystemBase {
     3
   );
 
-  private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeft.getTranslation(), m_frontRight.getTranslation(), m_backLeft.getTranslation(), m_backRight.getTranslation());
 
   private final AHRS m_imu = new AHRS(NavXComType.kI2C); // im pretty sure this is i2c based on docs
 
@@ -83,7 +82,7 @@ public class SwerveDrive extends SubsystemBase {
 
   private final Field2d m_field = new Field2d();
 
-  private final SwerveDriveOdometry m_odo = new SwerveDriveOdometry(m_kinematics, getAngle(), new SwerveModulePosition[] {
+  private final SwerveDriveOdometry m_odo = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getAngle(), new SwerveModulePosition[] {
     m_frontLeft.getPosition(),
     m_frontRight.getPosition(),
     m_backLeft.getPosition(),
@@ -117,9 +116,6 @@ public class SwerveDrive extends SubsystemBase {
     return m_odo.getPoseMeters();
   }
 
-  public SwerveDriveKinematics getSwerveKinematics(){
-    return m_kinematics;
-  }
 
   public void setModuleStates(SwerveModuleState[] states) {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.kMaxTranslationalMetersPerSecond);
@@ -255,7 +251,7 @@ public class SwerveDrive extends SubsystemBase {
     m_yStartPose = SmartDashboard.getNumber("Swerve/Odo/Y", 2);
     SmartDashboard.putNumber("Swerve/Odo/X", m_xStartPose);
     SmartDashboard.putNumber("Swerve/Odo/Y", m_yStartPose);
-
+    SmartDashboard.putNumber("BR Angle", m_backRight.getTurningPosition());
     
     // System.out.println("Chassis speeds:" + this.getChassisSpeeds());
     // System.out.println("X error: " + (3 - m_odo.getPoseMeters().getX()));

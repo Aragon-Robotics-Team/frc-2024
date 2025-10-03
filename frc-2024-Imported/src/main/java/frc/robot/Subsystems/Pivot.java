@@ -24,12 +24,12 @@ public class Pivot extends SubsystemBase {
   private MotorOutputConfigs clockwiseMotorConfig;
   private MotorOutputConfigs ccwMotorConfig;
 
-  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(2);
+  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(PivotConstants.kEncoderID);
 
-  private LimitSwitch m_forward = new LimitSwitch(9);
-  private LimitSwitch m_backward = new LimitSwitch(7);
+  private LimitSwitch m_forward = new LimitSwitch(PivotConstants.kForwardSwitchID);
+  private LimitSwitch m_backward = new LimitSwitch(PivotConstants.kBackwardSwitchID);
 
-  private double encoderOffset = 0.0; // used to replace the deprecated encoder.reset() method
+  private double encoderOffset = 0.292; // used to replace the deprecated encoder.reset() method
 
 
   /** Creates a new ElevatorPivot. */
@@ -47,8 +47,8 @@ public class Pivot extends SubsystemBase {
     
     m_falcon1.setNeutralMode(NeutralModeValue.Brake);
     m_falcon2.setNeutralMode(NeutralModeValue.Brake);
-    m_falcon3.setNeutralMode(NeutralModeValue.Brake);
-    m_falcon4.setNeutralMode(NeutralModeValue.Brake);
+    m_falcon3.setNeutralMode(NeutralModeValue.Coast);
+    m_falcon4.setNeutralMode(NeutralModeValue.Coast);
 
     // m_falcon1.getEncoder().setPosition(0);
   }
@@ -81,8 +81,8 @@ public class Pivot extends SubsystemBase {
     }
     m_falcon1.set(-speed);
     m_falcon2.set(-speed);
-    m_falcon3.set(-speed);
-    m_falcon4.set(-speed);
+    // m_falcon3.set(-speed);
+    // m_falcon4.set(-speed);
   }
 
   @Override

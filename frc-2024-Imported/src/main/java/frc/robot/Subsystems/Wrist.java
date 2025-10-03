@@ -16,9 +16,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class Wrist extends SubsystemBase {
 
   private TalonFX m_falcon = new TalonFX(WristConstants.kMotorID);
-  private LimitSwitch m_forward = new LimitSwitch(5);
-  private LimitSwitch m_backward = new LimitSwitch(4);
-  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(6);
+  private LimitSwitch m_forward = new LimitSwitch(WristConstants.kForwardSwitchID);
+  private LimitSwitch m_backward = new LimitSwitch(WristConstants.kBackwardSwitchID);
+  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(WristConstants.kEncoderID);
   public Wrist() {
     m_falcon.setPosition(0);
     m_falcon.setNeutralMode(NeutralModeValue.Brake);
