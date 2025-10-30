@@ -60,9 +60,10 @@ public class RobotContainer {
   
   //private LimitSwitch m_limitSwitch = new LimitSwitch(12);
   private final SwerveDrive m_swerve = new SwerveDrive();
-
+  
   private final Joystick m_driverJoystick = new Joystick(DriveConstants.kDriveJoystickId);
-  private final Joystick m_operatorJoystick = new Joystick(1);
+  private final Joystick m_operatorJoystick = new Joystick(DriveConstants.kOperatorJoystickId);
+
 
   private final JoystickDrive m_drive = new JoystickDrive(m_swerve, 
     () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickXAxis),
@@ -76,7 +77,6 @@ public class RobotContainer {
   private JoystickButton m_snapButton = new JoystickButton(m_driverJoystick, Config.kSnapButtonID); 
   private JoystickButton m_straightenButton = new JoystickButton(m_driverJoystick, Config.kStraightenButtonID);
   // The robot's subsystems and commands are defined here...
-
   private Pivot m_pivot = new Pivot();
   private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_operatorJoystick);
   private PIDFront m_pivotForward = new PIDFront(m_pivot);

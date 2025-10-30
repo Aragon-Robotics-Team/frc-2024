@@ -124,6 +124,7 @@ public class SwerveModule extends SubsystemBase {
     double pid = m_drivingPIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
     m_driveMotor.set(ff + pid);
     m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians()));
+    System.out.println(""+m_moduleId + ": "+ m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians()));
 
     SmartDashboard.putString("Swerve_" + m_moduleId + "_state", state.toString());
   }
@@ -147,8 +148,9 @@ public class SwerveModule extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Swerve/Angle/Measured/Module_" + m_moduleId, getTurningPosition());
-    SmartDashboard.putNumber("Swerve/Speed/Measured/Module_" + m_moduleId, getDriveVelocity());
-    SmartDashboard.putNumber("Swerve/Distance/Module_" + m_moduleId, getDrivePosition());
+    // SmartDashboard.putNumber("Swerve/Angle/Measured/Module_" + m_moduleId, getTurningPosition());
+    // SmartDashboard.putNumber("Swerve/Speed/Measured/Module_" + m_moduleId, getDriveVelocity());
+    // SmartDashboard.putNumber("Swerve/Distance/Module_" + m_moduleId, getDrivePosition());
+    
   }
 }
