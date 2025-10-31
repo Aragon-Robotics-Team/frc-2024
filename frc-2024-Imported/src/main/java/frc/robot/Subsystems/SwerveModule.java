@@ -79,8 +79,8 @@ public class SwerveModule extends SubsystemBase {
 
   
   public double getTurningPosition() {
-    //return m_absoluteEncoder.get()*DriveConstants.kTurnEncoderiositionToRadians - m_absoluteEncoderOffset;
-    return m_absoluteEncoder.get();
+    return m_absoluteEncoder.get()*DriveConstants.kTurnEncoderPositionToRadians - m_absoluteEncoderOffset;
+    //return m_absoluteEncoder.get();
   }
 
   public Rotation2d getRotation() {
@@ -114,7 +114,7 @@ public class SwerveModule extends SubsystemBase {
     }
 
     // deprecated later, idc to change it for now
-    //state = SwerveModuleState.optimize(state, getState().angle);
+    state = SwerveModuleState.optimize(state, getState().angle);
     
     SmartDashboard.putNumber("Swerve/Speed/Commanded/Module_" + m_moduleId, state.speedMetersPerSecond);
     SmartDashboard.putNumber("Swerve/Commanded/Angle_" + m_moduleId, state.angle.getRadians());
@@ -123,6 +123,7 @@ public class SwerveModule extends SubsystemBase {
     double ff = state.speedMetersPerSecond / DriveConstants.kMaxTranslationalMetersPerSecond;
     double pid = m_drivingPIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
     m_driveMotor.set(ff + pid);
+    SmartDashboard.putNumber("steering set" + m_moduleId, (m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians())));
     m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians()));
     System.out.println(""+m_moduleId + ": "+ m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians()));
 

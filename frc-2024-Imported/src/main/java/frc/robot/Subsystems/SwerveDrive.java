@@ -173,7 +173,11 @@ public class SwerveDrive extends SubsystemBase {
     );
   }
 
-  public void driveRobotRelative(ChassisSpeeds speeds) { 
+  public void driveRobotRelative(ChassisSpeeds speeds) {
+    SmartDashboard.putNumber("chassis speedX", speeds.vxMetersPerSecond);
+    SmartDashboard.putNumber("chassis speedY", speeds.vyMetersPerSecond);
+    SmartDashboard.putNumber("chassis omega", speeds.omegaRadiansPerSecond);
+
     SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     setModuleStates(states);
   }
@@ -252,9 +256,9 @@ public class SwerveDrive extends SubsystemBase {
     
     m_xStartPose = SmartDashboard.getNumber("Swerve/Odo/X", 2);
     m_yStartPose = SmartDashboard.getNumber("Swerve/Odo/Y", 2);
-    SmartDashboard.putNumber("Swerve/Odo/X", m_xStartPose);
-    SmartDashboard.putNumber("Swerve/Odo/Y", m_yStartPose);
-    SmartDashboard.putNumber("BR Angle", m_backRight.getTurningPosition());
+    // SmartDashboard.putNumber("Swerve/Odo/X", m_xStartPose);
+    // SmartDashboard.putNumber("Swerve/Odo/Y", m_yStartPose);
+    // SmartDashboard.putNumber("BR Angle", m_backRight.getTurningPosition());
     
     // System.out.println("Chassis speeds:" + this.getChassisSpeeds());
     // System.out.println("X error: " + (3 - m_odo.getPoseMeters().getX()));

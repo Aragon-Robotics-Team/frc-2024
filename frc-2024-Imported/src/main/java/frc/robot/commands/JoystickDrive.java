@@ -26,6 +26,7 @@ public class JoystickDrive extends Command {
     m_xSpeed = xSpeed;
     m_ySpeed = ySpeed;
     m_turningSpeed = turningSpeed;
+    
 
     m_xLimiter = new SlewRateLimiter(DriveConstants.kTeleopMaxAccelMetersPerSecondSquared);
     m_yLimiter = new SlewRateLimiter(DriveConstants.kTeleopMaxAccelMetersPerSecondSquared);
@@ -61,13 +62,15 @@ public class JoystickDrive extends Command {
 
     // Construct chassis speed objects.
     ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, turningSpeed, m_swerve.getAngle());
+    SmartDashboard.putNumber("chassis X", chassisSpeeds.vxMetersPerSecond);
+    SmartDashboard.putNumber("chassis Y", chassisSpeeds.vyMetersPerSecond);
+    SmartDashboard.putNumber("chassis Omega", chassisSpeeds.omegaRadiansPerSecond);
     // ChassisSpeeds chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
     // ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, ySpeed, turningSpeed);
 
 
     // Calculate module states.
     SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
-
     // Set module states.
     m_swerve.setModuleStates(moduleStates);
 
