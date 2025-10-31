@@ -4,13 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.fasterxml.jackson.databind.util.Named;
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -20,13 +14,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -71,11 +62,9 @@ public class SwerveDrive extends SubsystemBase {
     3
   );
 
-  private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeft.getTranslation(), m_frontRight.getTranslation(), m_backLeft.getTranslation(), m_backRight.getTranslation());
+
 
   private final AHRS m_imu = new AHRS();
-
-  private double m_totalCurrent;
 
   private final PIDController m_xPID = new PIDController(DriveConstants.kP_X, DriveConstants.kI_X, DriveConstants.kD_X);
   private final PIDController m_yPID = new PIDController(DriveConstants.kP_Y, DriveConstants.kI_Y, DriveConstants.kD_Y);
@@ -146,12 +135,12 @@ public class SwerveDrive extends SubsystemBase {
     setModuleStates(states);  
   }
 
-  public void resetAllDistances() {
-    m_frontLeft.resetEncoders();
-    m_frontRight.resetEncoders();
-    m_backLeft.resetEncoders();
-    m_backRight.resetEncoders();
-  }
+  // public void resetAllDistances() {
+  //   m_frontLeft.resetEncoders();
+  //   m_frontRight.resetEncoders();
+  //   m_backLeft.resetEncoders();
+  //   m_backRight.resetEncoders();
+  // }
 
   public void printVelocitiesandPositions(){
     System.out.println("Front left Velocity: " + m_frontLeft.getDriveVelocity());
@@ -216,45 +205,6 @@ public class SwerveDrive extends SubsystemBase {
   }
 
 
-  public double getFrontLeftVelocityActual()
-  {
-    return m_frontLeft.getRotationActual();
-  }
-
-  public double getFrontLeftVelocityCommand()
-  {
-    return m_frontLeft.getRotationCommand();
-  }
-
-  public double getFrontRightVelocityActual()
-  {
-    return m_frontRight.getRotationActual();
-  }
-
-  public double getFrontRightVelocityCommand()
-  {
-    return m_frontRight.getRotationCommand();
-  }
-
-  public double getBackLeftVelocityActual()
-  {
-    return m_backLeft.velocity;
-  }
-
-  public double getBackLeftVelocityCommand()
-  {
-    return m_backLeft.velocityCommand;
-  }
-
-  public double getBackRightVelocityActual()
-  {
-    return m_backRight.velocity;
-  }
-
-  public double getBackRightVelocityCommand()
-  {
-    return m_backRight.velocityCommand;
-  }
 
 
   public void driveRobotRelative(ChassisSpeeds speeds) { 
@@ -270,55 +220,6 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public SwerveDrive(Command stowed, Command autoShoot, Command autoIntake, Command groundIntake, Command outtake, Command subwoofer, Command rightUnderStage) {
-    NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
-    NamedCommands.registerCommand("Stow", stowed);
-    NamedCommands.registerCommand("AutoShoot", autoShoot);
-    NamedCommands.registerCommand("AutoIntake", autoIntake);
-    NamedCommands.registerCommand("GroundIntake", groundIntake);
-    NamedCommands.registerCommand("Outtake", outtake);
-    NamedCommands.registerCommand("Subwoofer", subwoofer);
-    NamedCommands.registerCommand("RightUnderStage", rightUnderStage);
-
-    AutoBuilder.configureHolonomic(
-                this::getPoseMeters, // Robot pose supplier
-                this::resetOdo, // Method to reset odometry (will be called if your auto has a starting pose)
-                this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                        new PIDConstants(this.getXController().getP(), this.getXController().getI(), this.getXController().getD()), // Translation PID constants
-                        new PIDConstants(this.getThetaController().getP(), this.getThetaController().getI(), this.getThetaController().getD()), // Translation PID constants
-                         // Rotation PID constants
-                        DriveConstants.kMaxTranslationalMetersPerSecond, // Max module speed, in m/s
-                        Units.inchesToMeters(14.0), // Drive base radius in meters. Distance from robot center to furthest module.
-                        new ReplanningConfig() // Default path replanning config. See the API for the options here
-                ),
-                () -> {
-                    // Boolean supplier that controls when the path will be mirrored for the red alliance
-                    // This will flip the path being followed to the red side of the field.
-                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                },
-                this // Reference to this subsystem to set requirements
-     );
-
-     SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
-     double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
-     SmartDashboard.putNumber("Driving/Adjust angle", m_angle);
-     adjustAngle(m_angle);
-
-     new Thread(() -> {
-      try {
-        Thread.sleep(1000);
-        resetHeading();
-      } catch (Exception e) {
-        // System.out.println("ERROR in sleep thread: " + e);
-      }
-     }).start();
   }
 
   public void stop() {
@@ -341,7 +242,6 @@ public class SwerveDrive extends SubsystemBase {
 
     //SmartDashboard.putNumber("Angle", getAngle().getDegrees());
     
-    m_totalCurrent = m_frontLeft.getDriveCurrent() + m_frontLeft.getTurnCurrent() + m_frontRight.getDriveCurrent() + m_frontRight.getTurnCurrent() + m_backLeft.getDriveCurrent() + m_backLeft.getTurnCurrent() + m_backRight.getDriveCurrent() + m_backRight.getTurnCurrent();
     //SmartDashboard.putNumber("Total Current", m_totalCurrent);
 
     m_field.setRobotPose(m_odo.getPoseMeters());

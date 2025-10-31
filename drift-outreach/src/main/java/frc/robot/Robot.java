@@ -4,27 +4,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.PowerDistribution;
-import org.littletonrobotics.junction.LogFileUtil;
-import org.littletonrobotics.junction.LoggedRobot;
-
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.SwerveDrive;
-
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGReader;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-
-import java.io.File;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -32,12 +16,11 @@ import java.io.File;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends LoggedRobot {
+public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
 
   private RobotContainer m_robotContainer;
-  private SwerveDrive m_swerve;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -58,26 +41,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
-
-    var directory = new File(log_directory);
-
-    if (!directory.exists())
-    {
-      directory.mkdir();
-    }
-
-    Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
-    
-
-
-    Logger.addDataReceiver(new WPILOGWriter(log_directory)); // Log to a USB stick ("/U/logs")
-    Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-
-    // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
-    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
-
     m_robotContainer = new RobotContainer();
-    m_swerve = m_robotContainer.m_swerve;
   }
 
   /**
@@ -121,14 +85,6 @@ public class Robot extends LoggedRobot {
 
   
 
-  public void logAllSwerveModules(SwerveDrive.I property, String propertyName)
-  {
-    double[] values = m_swerve.getFromAllSwerveModules(property);
-    for(int i = 0; i < values.length; i++)
-    {
-      Logger.recordOutput(m_swerve.m_moduleNames[i] + propertyName, values[i]);
-    }
-  }
 
   
 
@@ -138,15 +94,6 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    // logAllSwerveModules(SwerveModule::getVelocityActual, "Velocity");
-    // logAllSwerveModules(SwerveModule::getVelocityCommand, "VelocityCommand");
-    // logAllSwerveModules(SwerveModule::getRotationActual, "Rotation");
-    // logAllSwerveModules(SwerveModule::getRotationCommand, "RotationCommand");
-
-    // Logger.recordOutput("steeringBackLeft", m_swerve.getBackLeftRotation());
-    // Logger.recordOutput("steeringBackLeftCommand", m_swerve.getBackLeftRotationCommand());
-    Logger.recordOutput("driveBackLeft", m_swerve.getBackLeftVelocityActual());
-    Logger.recordOutput("driveBackLeftCommand", m_swerve.getBackLeftVelocityCommand());
     
   }
 

@@ -6,30 +6,21 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.units.Velocity;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class SwerveModule extends SubsystemBase {
-  private final TalonFX m_driveMotor;
+  private final CANSparkMax m_driveMotor;
   private final CANSparkMax m_turnMotor;
 
   private final DutyCycleEncoder m_absoluteEncoder;
@@ -49,7 +40,7 @@ public class SwerveModule extends SubsystemBase {
   public SwerveModule(int driveId, int turnId, int absoluteEncoderPort, double absoluteEncoderOffset,
       boolean driveReversed, boolean turningReversed, int moduleId) {
     // Initialize motors and encoders.
-    m_driveMotor = new TalonFX(driveId);
+    m_driveMotor = new CANSparkMax(driveId, MotorType.kBrushless);
     m_turnMotor = new CANSparkMax(turnId, MotorType.kBrushless);
 
     m_absoluteEncoder = new DutyCycleEncoder(new DigitalInput(absoluteEncoderPort));
@@ -73,21 +64,12 @@ public class SwerveModule extends SubsystemBase {
     //m_turnMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5,200);
     //m_turnMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 200);
 
-    TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-
-    driveConfig.MotorOutput.Inverted = driveReversed ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
-    driveConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    driveConfig.Feedback.SensorToMechanismRatio = DriveConstants.kDriveSensorToMechanismRatio;
-
-    m_driveMotor.getConfigurator().apply(driveConfig);
-
-    resetEncoders();
-
-    m_drivePos = m_driveMotor.getPosition();
-    m_driveVel = m_driveMotor.getVelocity();
+    m_driveMotor.setInverted(turningReversed); // *************
+    m_driveMotor.setIdleMode(IdleMode.kBrake);
 
 
-    SmartDashboard.putData("Swerve/Distance/reset_" + m_moduleId,  new InstantCommand(() -> resetEncoders()));
+
+    //SmartDashboard.putData("Swerve/Distance/reset_" + m_moduleId,  new InstantCommand(() -> resetEncoders()));
     
 
   }
@@ -110,9 +92,9 @@ public class SwerveModule extends SubsystemBase {
     return m_driveVel.refresh().getValueAsDouble();
   }
 
-  public void resetEncoders() {
-    m_driveMotor.setPosition(0.0);
-  }
+  // public void resetEncoders() {
+  //   m_driveMotor.setPosition(0.0);
+  // }
 
   public SwerveModuleState getState() {
     return new SwerveModuleState(getDriveVelocity(), getRotation());
@@ -200,13 +182,13 @@ public class SwerveModule extends SubsystemBase {
     m_turnMotor.set(0.0);
   }
 
-  public double getDriveCurrent() {
-    return m_driveMotor.getStatorCurrent().getValueAsDouble();
-  }
+  // public double getDriveCurrent() {
+  //   return m_driveMotor.getStatorCurrent().getValueAsDouble();
+  // }
 
-  public double getTurnCurrent() {
-    return m_turnMotor.getOutputCurrent();
-  }
+  // public double getTurnCurrent() {
+  //   return m_turnMotor.getOutputCurrent();
+  // }
 
   @Override
   public void periodic() {

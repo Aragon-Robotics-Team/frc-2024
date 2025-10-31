@@ -46,26 +46,26 @@ public final class Constants {
       new Translation2d(0.3556 - 0.644, -0.3556 + 0.063)
     );
     // TODO: gather all of these constants.
-    public static int kFrontLeftDriveId = 51;
+    public static int kFrontLeftDriveId = 26;
     public static int kFrontLeftTurnId = 1;
     public static int kFrontLeftAbsoluteEncoderPort = 9;
     // original -> public static double kFrontLeftAbsoluteEncoderOffset = -0.529990463821544 - (Math.PI / 2.0);
     public static double kFrontLeftAbsoluteEncoderOffset = -0.679890463821544 +0.03;
     public static boolean kFrontLeftDriveReversed = true;
 
-    public static int kFrontRightDriveId = 52;
+    public static int kFrontRightDriveId = 4;
     public static int kFrontRightTurnId = 3;
     public static int kFrontRightAbsoluteEncoderPort = 7;
     public static double kFrontRightAbsoluteEncoderOffset = 1.412447275814819 + (Math.PI / 2.0) - 0.007;
     public static boolean kFrontRightDriveReversed = true;
 
-    public static int kBackLeftDriveId = 53;
+    public static int kBackLeftDriveId = 8;
     public static int kBackLeftTurnId = 7;
     public static int kBackLeftAbsoluteEncoderPort = 8;
     public static double kBackLeftAbsoluteEncoderOffset = 1.286610661599266 + (Math.PI / 2.0) - 0.01;
     public static boolean kBackLeftDriveReversed = false;
 
-    public static int kBackRightDriveId = 54;
+    public static int kBackRightDriveId = 6;
     public static int kBackRightTurnId = 5;
     public static int kBackRightAbsoluteEncoderPort = 6;
     public static double kBackRightAbsoluteEncoderOffset = -0.406511594330128 - (Math.PI / 2.0) - 0.01;
