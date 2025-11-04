@@ -4,40 +4,24 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.LimitSwitch;
 import edu.wpi.first.wpilibj.Joystick;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.JoystickDrive;
-import frc.robot.subsystems.LimitSwitch;
 import frc.robot.commands.BackwardIntake;
 import frc.robot.commands.ForwardIntake;
 import frc.robot.commands.elevator.ArcadeElevator;
-import frc.robot.commands.elevator.PIDDown;
-import frc.robot.commands.elevator.PIDUp;
 import frc.robot.commands.pivot.ArcadePivot;
 import frc.robot.commands.pivot.PIDBack;
 import frc.robot.commands.pivot.PIDFront;
 import frc.robot.commands.wrist.ArcadeWrist;
 import frc.robot.commands.wrist.PIDBackward;
 import frc.robot.commands.wrist.PIDForward;
-import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.LimitSwitch;
 import frc.robot.subsystems.Pivot;
-
-@SuppressWarnings("unused")
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -48,8 +32,8 @@ import frc.robot.subsystems.Pivot;
 public class RobotContainer {
 
   private static final class Config{
-    public static final int kSnapButtonID = 1;
-    public static final int kStraightenButtonID = 2;
+    // public static final int kSnapButtonID = 1;
+    // public static final int kStraightenButtonID = 2;
     public static final int kElevatorUpButtonID = 1;
     public static final int kElevatorDownButtonID = 2;
     public static final int kPivotForwardButtonID = 3;
@@ -58,45 +42,44 @@ public class RobotContainer {
     public static final int kWristBackwardButtonID = 6;
   }
   
-  //private LimitSwitch m_limitSwitch = new LimitSwitch(12);
-  private final SwerveDrive m_swerve = new SwerveDrive();
-  
+  // private LimitSwitch m_limitSwitch = new LimitSwitch(12);
+  // private final SwerveDrive m_swerve = new SwerveDrive();
+
   private final Joystick m_driverJoystick = new Joystick(DriveConstants.kDriveJoystickId);
-  private final Joystick m_operatorJoystick = new Joystick(DriveConstants.kOperatorJoystickId);
 
-
-  private final JoystickDrive m_drive = new JoystickDrive(m_swerve, 
-    () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickXAxis),
-    () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickYxis),
-    () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickRotAxis)
-  );
+  // private final JoystickDrive m_drive = new JoystickDrive(m_swerve, 
+  //   () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickXAxis),
+  //   () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickYxis),
+  //   () -> -m_driverJoystick.getRawAxis(DriveConstants.kJoystickRotAxis)
+  // );
 
   // private SnapToAngle m_snap = new SnapToAngle(m_swerve);
   // private AutoStraighten m_straighten = new AutoStraighten(m_swerve);
 
-  private JoystickButton m_snapButton = new JoystickButton(m_driverJoystick, Config.kSnapButtonID); 
-  private JoystickButton m_straightenButton = new JoystickButton(m_driverJoystick, Config.kStraightenButtonID);
+  // private JoystickButton m_snapButton = new JoystickButton(m_driverJoystick, Config.kSnapButtonID); 
+  // private JoystickButton m_straightenButton = new JoystickButton(m_driverJoystick, Config.kStraightenButtonID);
   // The robot's subsystems and commands are defined here...
+
   private Pivot m_pivot = new Pivot();
-  private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_operatorJoystick);
+  private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_driverJoystick);
   private PIDFront m_pivotForward = new PIDFront(m_pivot);
-  private JoystickButton m_pivotFowardButton = new JoystickButton(m_operatorJoystick, Config.kPivotForwardButtonID);
+  private JoystickButton m_pivotFowardButton = new JoystickButton(m_driverJoystick, Config.kPivotForwardButtonID);
   private PIDBack m_pivotBackward = new PIDBack(m_pivot);
-  private JoystickButton m_pivotBackwardButton = new JoystickButton(m_operatorJoystick, Config.kPivotBackwardButtonID);
+  private JoystickButton m_pivotBackwardButton = new JoystickButton(m_driverJoystick, Config.kPivotBackwardButtonID);
 
   private Elevator m_elevator = new Elevator();
-  private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_elevator, m_operatorJoystick);
-  private PIDUp m_elevatorUp = new PIDUp(m_elevator);
-  private JoystickButton m_elevatorUpButton = new JoystickButton(m_operatorJoystick, Config.kElevatorUpButtonID);
-  private PIDDown m_elevatorDown = new PIDDown(m_elevator);
-  private JoystickButton m_elevatorDownButton = new JoystickButton(m_operatorJoystick, Config.kElevatorDownButtonID);
+  private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_elevator, m_driverJoystick);
+  //private PIDUp m_elevatorUp = new PIDUp(m_elevator);
+  private JoystickButton m_elevatorUpButton = new JoystickButton(m_driverJoystick, Config.kElevatorUpButtonID);
+  //private PIDDown m_elevatorDown = new PIDDown(m_elevator);
+  private JoystickButton m_elevatorDownButton = new JoystickButton(m_driverJoystick, Config.kElevatorDownButtonID);
 
   private Wrist m_wrist = new Wrist();
-  private ArcadeWrist m_arcadeWrist = new ArcadeWrist(m_wrist, m_operatorJoystick);
+  private ArcadeWrist m_arcadeWrist = new ArcadeWrist(m_wrist, m_driverJoystick);
   private PIDForward m_wristForward = new PIDForward(m_wrist);
-  private JoystickButton m_wristForwardButton = new JoystickButton(m_operatorJoystick, Config.kWristForwardButtonID);
+  private JoystickButton m_wristForwardButton = new JoystickButton(m_driverJoystick, Config.kWristForwardButtonID);
   private PIDBackward m_wristBackward = new PIDBackward(m_wrist);
-  private JoystickButton m_wristBackwardButton = new JoystickButton(m_operatorJoystick, Config.kWristBackwardButtonID);
+  private JoystickButton m_wristBackwardButton = new JoystickButton(m_driverJoystick, Config.kWristBackwardButtonID);
 
   private ForwardIntake m_forwardIntake = new ForwardIntake(m_pivot, m_wrist);
   private BackwardIntake m_backwardIntake = new BackwardIntake(m_pivot, m_wrist);
@@ -164,7 +147,6 @@ public class RobotContainer {
     m_wrist.setDefaultCommand(m_arcadeWrist);
     m_pivot.setDefaultCommand(m_arcadePivot);
   //   m_elevator.setDefaultCommand(m_arcadeElevator);
-    m_swerve.setDefaultCommand(m_drive);
     return null;
   }
 }

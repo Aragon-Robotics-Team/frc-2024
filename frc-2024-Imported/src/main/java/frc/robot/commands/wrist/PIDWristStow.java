@@ -13,7 +13,7 @@ public class PIDWristStow extends Command {
 
     private static final class Config{
     public static final double kSetpoint = -0.020957403363085;
-    public static final double kDeadband = 0.000;
+    //public static final double kDeadband = 0.000;
     public static final double kP = 2.1;
     public static final double kI = 0;
     public static final double kD = 0;
