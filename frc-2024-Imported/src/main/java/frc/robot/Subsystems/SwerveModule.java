@@ -107,13 +107,14 @@ public class SwerveModule extends SubsystemBase {
     return new SwerveModulePosition(getDrivePosition(), getRotation());
   }
 
+  @SuppressWarnings("deprecation")
   public void setDesiredState(SwerveModuleState state) {
     if (Math.abs(state.speedMetersPerSecond) < DriveConstants.kTranslationalDeadbandMetersPerSecond) {
       stop();
       return;
     }
 
-    // deprecated later, idc to change it for now
+    // deprecated, but we need this. 
     state = SwerveModuleState.optimize(state, getState().angle);
     
     SmartDashboard.putNumber("Swerve/Speed/Commanded/Module_" + m_moduleId, state.speedMetersPerSecond);

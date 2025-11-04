@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Wrist;
 
-public class PIDBackward extends Command {
+public class PIDWristStow extends Command {
 
     private static final class Config{
-    public static final double kSetpoint = -0.010;
-    //public static final double kDeadband = 0.005;
-    public static final double kP = 2.2;
+    public static final double kSetpoint = -0.020957403363085;
+    public static final double kDeadband = 0.000;
+    public static final double kP = 2.1;
     public static final double kI = 0;
     public static final double kD = 0;
   }
@@ -24,7 +24,7 @@ public class PIDBackward extends Command {
   private double m_speed;
 
   /** Creates a new PIDForward. */
-  public PIDBackward(Wrist wrist) {
+  public PIDWristStow(Wrist wrist) {
     m_wrist = wrist;
     // Use addRequirements() here to declare subsystem dependenxcies.
     addRequirements(m_wrist);
@@ -41,8 +41,8 @@ public class PIDBackward extends Command {
   public void execute() {
     m_speed = m_pid.calculate(m_wrist.getEncoderPosition(), Config.kSetpoint);
     //  if (!(Math.abs(m_wrist.getEncoderPosition() - Config.kSetpoint)<= Config.kDeadband)){
-      System.out.println("I'm running in if-else loop");
-      System.out.println(m_speed);
+      // // System.out.println("I'm running in if-else loop");
+      // System.out.println(m_speed);
       SmartDashboard.putNumber("PID value", m_speed);
       m_wrist.setSpeed(m_speed);
     // }

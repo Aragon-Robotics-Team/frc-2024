@@ -171,7 +171,7 @@ public final class Constants {
     public static final double kP = 0.5;
     public static final double kI = 0;
     public static final double kD = 0;
-
+  }
 
   public final static class Wrist {
     public static final int kMotorID = 5;
@@ -190,5 +190,34 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0;
   }
-}
+
+    public static final class IntakeConstants {
+    public static final int kIntakeMotorID = 9;
+  }
+    public static final class ShooterConstants {
+    public static final int kShooterMotorID1 = 10;
+    public static final int kShooterMotorID2 = 11;
+  }
+
+  public static final class PositionConstants {
+    public static final double kCalibrationOffset = 0.16 - 0.129;
+
+    public static final double kIntakePivot = 0.335;
+    public static final double kIntakeElevator = 0.0;
+    public static final double kIntakeWrist = -0.260;
+
+    public static final double kStowPivot = 0.16 - kCalibrationOffset;
+    public static final double kStowElevator = 0.0;
+    public static final double kStowWrist = -0.02;
+
+    public static final double kSubwooferPivot = kStowPivot;
+    public static final double kSubwooferElevator = 0.0;
+    public static final double kSubwooferWrist = -0.12;
+
+    public static final double kAmpPivot = 0.054292979797325;
+    public static final double kAmpElevator = -2.077077501926937;
+    public static final double kAmpWrist = -0.272981734663693 ;
+
+    public static final double kStageWrist = -0.197;
+  }
 }
