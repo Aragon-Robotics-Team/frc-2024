@@ -10,6 +10,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -131,39 +132,69 @@ public final class Constants {
   }
 
   public final static class PivotConstants {
-    public static final int kMotorID1 = 1;
-    public static final int kMotorID2 = 2;
-    public static final int kMotorID3 = 3;
-    public static final int kMotorID4 = 4;
+    public static final int kMotorID1 = 31;
+    public static final int kMotorID2 = 32;
+    public static final int kMotorID3 = 33;
+    public static final int kMotorID4 = 34;
     public static final int kEncoderID = 3;
     public static final int kForwardSwitchID = 4;
     public static final int kBackwardSwitchID = 1;
-    public static final int kGearRatio = 200;
-    public static final double kP = 0.5;
+    public static final double kGearRatio = 182.0444;
+    public static final double kP = 1;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kDeadBand = 0.05;
-    public static final double kPivotEncoderOffset =0;
+    public static final double kAbsEncoderOffset = 0;//0.3954; // higher = more away from battery
+
+    public static final double kCruiseVelocity = 0.3; // Rot/Sec
+    public static final double kMaxAccel = 0.8; // Rot/Sec^2
+
+    public static final TrapezoidProfile.Constraints kConstraints = new TrapezoidProfile.Constraints(kCruiseVelocity, kMaxAccel);
+
+    // These will very likely be different than the ones used above,
+    // since are not applied atop of feedforward.
+    public static final double kPTrap = 2.0;
+    public static final double kITrap = 0.0; //1.55;
+    public static final double kDTrap = 0.0; //0.3;
+
+    public static final double kS = 0;
+    public static final double kV = 0.03;
+
+    public static final double kPositionDeadband = 0.01;
   }
 
   public final static class WristConstants {
-    public static final int kMotorID = 5;
-    public static final double kGearRatio = 51.9273;
+    public static final int kMotorID = 16;
+    public static final int kEncoderID = 0;
+    public static final int kForwardSwitchID = 12;
+    public static final int kBackwardSwitchID = 19;
+    public static final double kGearRatio = 89.6000;
     public static final double kP = 0.5;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kDeadBand = 0.05;
+    public static final double kEncoderOffset = 0;//0.516434;
 
-    public static final double kEncoderOffset = 0.886434 - (0.42);
-    public static final int kEncoderID = 0;
-    public static final int kForwardSwitchID = 12;
-    public static final int kBackwardSwitchID = 19;
+    public static final double kCruiseVelocity = 0.4; // RPS
+    public static final double kMaxAccel = 0.8; // RPS^2 
+
+    public static final TrapezoidProfile.Constraints kConstraints = new TrapezoidProfile.Constraints(kCruiseVelocity, kMaxAccel);
+
+    // These will very likely be different than the ones used above,
+    // since are not applied atop of feedforward.
+    public static final double kPTrap = 0.75;
+    public static final double kITrap = 0;
+    public static final double kDTrap = 0;
+
+    public static final double kS = 0;
+    public static final double kV = 0.8393;
+
+    public static final double kPositionDeadband = 0.01;
   }
 
-  public static final class ElevatorConstants{
+  public static final class ElevatorConstants {
     public static final int kMotorID1 = 12;
     public static final int kMotorID2= 13;
-
     public static final int kEncoderID = 2;
     public static final int kTopSwitchID = 13;
     public static final int kBottomSwitchID = 10;
@@ -171,30 +202,30 @@ public final class Constants {
     public static final double kP = 0.5;
     public static final double kI = 0;
     public static final double kD = 0;
+    public static final double kGearRatio = 17.5000;
+
+    public static final double kCruiseVelocity = 0.0;
+    public static final double kMaxAccel = 0.0;
+
+    public static final TrapezoidProfile.Constraints kConstraints = new TrapezoidProfile.Constraints(kCruiseVelocity, kMaxAccel);
+
+    // These will very likely be different than the ones used above,
+    // since are not applied atop of feedforward.
+    public static final double kPTrap = 0;
+    public static final double kITrap = 0;
+    public static final double kDTrap = 0;
+
+    public static final double kS = 0;
+    public static final double kV = 0;
+
+    public static final double kPositionDeadband = 0.01;
   }
 
-  public final static class Wrist {
-    public static final int kMotorID = 5;
-    public static final double kGearRatio = 51.9273;
-    public static final double kP = 0.5;
-    public static final double kI = 0;
-    public static final double kD = 0;
-    public static final double kDeadBand = 0.05;
-
-  }
-  public static final class Elevator{
-    public static final int kMotorID1 = 6;
-    public static final int kMotorID2= 7;
-    public static final double RotationsPerInch = 0.000000001;
-    public static final double kP = 0.5;
-    public static final double kI = 0;
-    public static final double kD = 0;
-  }
-
-    public static final class IntakeConstants {
+  public static final class IntakeConstants {
     public static final int kIntakeMotorID = 9;
   }
-    public static final class ShooterConstants {
+
+  public static final class ShooterConstants {
     public static final int kShooterMotorID1 = 10;
     public static final int kShooterMotorID2 = 11;
   }
@@ -202,13 +233,13 @@ public final class Constants {
   public static final class PositionConstants {
     public static final double kCalibrationOffset = 0.16 - 0.129;
 
-    public static final double kIntakePivot = 0.335;
+    public static final double kIntakePivot = 0.041;//0.335;
     public static final double kIntakeElevator = 0.0;
-    public static final double kIntakeWrist = -0.260;
+    public static final double kIntakeWrist = 0.23;//-0.260;
 
-    public static final double kStowPivot = 0.16 - kCalibrationOffset;
+    public static final double kStowPivot = 0.25;//0.16 - kCalibrationOffset;
     public static final double kStowElevator = 0.0;
-    public static final double kStowWrist = -0.02;
+    public static final double kStowWrist = 0.5;//-0.02;
 
     public static final double kSubwooferPivot = kStowPivot;
     public static final double kSubwooferElevator = 0.0;

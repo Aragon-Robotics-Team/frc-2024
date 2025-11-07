@@ -41,7 +41,7 @@ public class Elevator extends SubsystemBase {
 
   public double getEncoderPosition(){
     // return m_neo1.getEncoder().getPosition();
-    return m_encoder.get();
+    return m_encoder.get() - 0.5;
   }
 
   public Boolean ifTopTriggered(){
